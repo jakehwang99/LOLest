@@ -21,3 +21,12 @@ Having skills in MySQL (or any other database implementation), Flask would be gr
 * Team and individual players pages with indepth stats and picture
 * Access to the stream (if available)
 * and more!
+
+# Initial Setup
+1. git clone the repository
+2. Ensure you have npm, python and pip installed on your machine.  (you can check the version to see if it is installed)
+3. Navigate to code/StaterCode/client and execute "npm install". This will download and install the dependencies listed in package.json.
+4. Run "npm start" in code/StarterCode/client to start the React server.
+5. Install flask (pip install flask).
+6. Start the server. Go to the server directory and do "python server.py".
+7. It is working if it displays an image with all the teams in the LCS and prints out "Retrieved team from backend: {some team}" underneath.
