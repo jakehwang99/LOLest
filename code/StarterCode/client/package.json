@@ -1,0 +1,53 @@
+{
+  "name": "lolest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --config ./webpack.config.js --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakehwang99/LOLest.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/jakehwang99/LOLest/issues"
+  },
+  "homepage": "https://github.com/jakehwang99/LOLest#readme",
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
+    "file-loader": "^4.2.0",
+    "image-webpack-loader": "^6.0.0",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "url-loader": "^2.2.0",
+    "webpack": "^4.41.1",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.2"
+  },
+  "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "axios": "^0.19.0",
+    "bootstrap": "^4.3.1",
+    "express": "^4.17.1",
+    "jquery": "^1.9.1",
+    "mongodb": "^3.3.2",
+    "popper.js": "^1.14.7",
+    "style-loader": "^1.0.0"
+  }
+}
