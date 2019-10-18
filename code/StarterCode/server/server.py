@@ -1,7 +1,20 @@
 import random
+import pymongo
+from pymongo import (
+    MongoClient,
+    )
+import json
 from flask import Flask, render_template
 
 app = Flask(__name__)
+
+# connect local mongoDB with a db named "lolest"
+# and collections named "players" to store players' info
+# and "teams" to store teams' info
+client = pymongo.MongoClient("localhost", 27017)
+db = client.lolest
+players = db.players
+teams = db.teams
 
 @app.route('/')
 def index():
