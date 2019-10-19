@@ -34,5 +34,4 @@ if __name__ == '__main__':
             #print(element.title)
 
     df = pd.DataFrame(data, columns = header)
-    print(df)
-    df.to_csv("LCS-Summer-2019.csv")
+    df.to_csv("LCS-Summer-2019.csv", index=False)
