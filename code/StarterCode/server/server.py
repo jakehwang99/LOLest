@@ -11,15 +11,18 @@ app = Flask(__name__)
 # connect local mongoDB with a db named "lolest"
 # and collections named "players" to store players' info
 # and "teams" to store teams' info
-client = pymongo.MongoClient("localhost", 27017)
-db = client.lolest
-players = db.players
-teams = db.teams
+client = pymongo.MongoClient("mongodb+srv://billy:test@lolest0-t8qkt.mongodb.net/test?retryWrites=true&w=majority") 
+#this gives us access to the atlas cluster
+db = client.testdata #testdata is
+collection = db.testCollection
+# teams = db.teams
 
 @app.route('/')
 def index():
-    return render_template('index.html')
-
+    names = "Names: "
+    for document in collection.find({}, {"_id":0, "name":1}):
+        names += document["name"] + " "
+    return render_template('index.html', data = names)
 
 @app.route('/teams') # take note of this decorator syntax, it's a common pattern
 def teams():
