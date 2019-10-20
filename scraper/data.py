@@ -35,3 +35,4 @@ if __name__ == '__main__':
 
     df = pd.DataFrame(data, columns = header)
     df.to_csv("LCS-Summer-2019.csv", index=False)
+    df.to_json("LCS-Summer-2019.json", orient='table')
