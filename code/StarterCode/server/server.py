@@ -13,14 +13,15 @@ app = Flask(__name__)
 # and "teams" to store teams' info
 client = pymongo.MongoClient("mongodb+srv://billy:test@lolest0-t8qkt.mongodb.net/test?retryWrites=true&w=majority") 
 #this gives us access to the atlas cluster
-db = client.testdata #testdata is
-collection = db.testCollection
+db = client["lolest"] #testdata is
+col = db["players"]
+
 # teams = db.teams
 
 @app.route('/')
 def index():
     names = "Names: "
-    for document in collection.find({}, {"_id":0, "name":1}):
+    for document in col.find({}, {"_id":0, "name":1}):
         names += document["name"] + " "
     return render_template('index.html', data = names)
 
