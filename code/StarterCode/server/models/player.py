@@ -1,5 +1,6 @@
 import pymongo
-# from Desktop.LOLest.code.StarterCode.server.server import db
+import json
+from our_mongo import players_collection
 
 class Player:
 
@@ -8,7 +9,7 @@ class Player:
     # Also works for user profile.
 
     def __init__(self, obj):
-        self._id = obj.get("_id")   # _id of in mongoDB
+        self._id = obj.get("_id")   # _id of player in mongoDB
         self.name = obj.get("name")
         self.team = obj.get("team")
         self.game = obj.get("game")
@@ -27,7 +28,6 @@ class Player:
         self.ks = obj.get("KS")
         self.gs = obj.get("GS")
         self.cp = obj.get("CP")
-        # other attributes of a player
 
     def to_json(self): 
 
@@ -53,5 +53,28 @@ class Player:
         }
         return player_json
 
-    # def getAll(self):
-    #     return db.players.find()
+    @staticmethod
+    def get_players():
+        data = players_collection.find().distinct("Player")  # return a list of players
+        to_json = json.dumps({"data": data})
+        return to_json
+
+    @staticmethod
+    def get_teams():
+        data = players_collection.find().distinct("Team")    # return a list of teams
+        to_json = json.dumps({"data": data})
+        return to_json
+
+    @staticmethod
+    def get_league():
+        data = []
+        ret = players_collection.find({}, {"_id":0})         # return a list of documents
+        for doc in ret:
+            data.append(doc)
+        to_json = json.dumps({"data": data})
+        return to_json
+
+    @staticmethod
+    def find_one(player_name):
+        data = players_collection.find_one({"Player": player_name}, {"_id":0})  # return the player's document
+        return data
