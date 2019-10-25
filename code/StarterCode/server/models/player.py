@@ -1,6 +1,6 @@
 import pymongo
 import json
-from our_mongo import players_collection
+from our_mongo import lolMongo
 
 class Player:
 
@@ -10,9 +10,9 @@ class Player:
 
     def __init__(self, obj):
         self._id = obj.get("_id")   # _id of player in mongoDB
-        self.name = obj.get("name")
-        self.team = obj.get("team")
-        self.game = obj.get("game")
+        self.PLAYER = obj.get("PLAYER")
+        self.TEAM = obj.get("TEAM")
+        self.GAMES = obj.get("GAMES")
         self.w = obj.get("W")
         self.l = obj.get("L")
         self.wr = obj.get("WR")
@@ -32,9 +32,9 @@ class Player:
     def to_json(self): 
 
         player_json = {
-            "name":self.name,
-            "team":self.team,
-            "game":self.game, 
+            "PLAYER":self.PLAYER,
+            "TEAM":self.TEAM,
+            "GAMES":self.GAMES, 
             "W":self.w,
             "L":self.l,
             "WR":self.wr,
@@ -55,20 +55,20 @@ class Player:
 
     @staticmethod
     def get_players():
-        data = players_collection.find().distinct("Player")  # return a list of players
+        data = lolMongo.LCS_Summer_2019.find().distinct("PLAYER")  # return a list of players
         to_json = json.dumps({"data": data})
         return to_json
 
     @staticmethod
     def get_teams():
-        data = players_collection.find().distinct("Team")    # return a list of teams
+        data = lolMongo.LCS_Summer_2019.find().distinct("TEAM")    # return a list of teams
         to_json = json.dumps({"data": data})
         return to_json
 
     @staticmethod
     def get_league():
         data = []
-        ret = players_collection.find({}, {"_id":0})         # return a list of documents
+        ret = lolMongo.LCS_Summer_2019.find({}, {"_id":0})         # return a list of documents
         for doc in ret:
             data.append(doc)
         to_json = json.dumps({"data": data})
@@ -76,5 +76,5 @@ class Player:
 
     @staticmethod
     def find_one(player_name):
-        data = players_collection.find_one({"Player": player_name}, {"_id":0})  # return the player's document
+        data = lolMongo.LCS_Summer_2019.find_one({"PLAYER": player_name}, {"_id":0})  # return the player's document
         return data

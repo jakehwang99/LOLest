@@ -3,16 +3,13 @@ import pymongo
 import json
 from flask import Flask, render_template
 from models.player import Player
-from our_mongo import players_collection
+from our_mongo import lolMongo
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])        # for testing
 def index():                             
-    names = "Names: "
-    for document in players_collection.find():
-        names += document["Player"] + " "
-    data = Player.get_players()
+    data = Player.get_teams()
     return render_template('index.html', data = data)
 
 @app.route('/players', methods=['GET'])  # retrieve all players' name
@@ -31,13 +28,13 @@ def teams():
         print("err: ", e)
     return teams
 
-@app.route('/league', methods=['GET'])   # retrieve the whole league in json
-def league():
+@app.route('/leagues', methods=['GET'])   # retrieve the whole league in json
+def leagues():
     try:
-        league = Player.get_league()
+        data = Player.get_league()
     except e as Exception:
         print("err: ", e)
-    return league
+    return data
 
 @app.route('/<player>', methods=['GET']) # retrieve a player's document
 def get_selected(player):
