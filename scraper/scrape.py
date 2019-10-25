@@ -38,7 +38,7 @@ def getdf(soup):
     rows = table.tbody.findAll('tr')
     
     header = [e.text for e in rows[4].findAll('th')]
-    header[0:2] = ['Team', 'Player']
+    header[0:3] = ['TEAM', 'PLAYER', 'GAMES']
 
     data = []
     
