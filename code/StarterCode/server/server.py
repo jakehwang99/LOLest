@@ -3,7 +3,7 @@ import pymongo
 import json
 from flask import Flask, render_template
 from models.player import Player
-from our_mongo import lolMongo
+from models.our_mongo import lolMongo
 
 app = Flask(__name__)
 
