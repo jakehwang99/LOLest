@@ -1,40 +1,48 @@
 import random
 import pymongo
-from pymongo import (
-    MongoClient,
-    )
 import json
 from flask import Flask, render_template
+from models.player import Player
+from models.our_mongo import lolMongo
 
 app = Flask(__name__)
 
-# connect local mongoDB with a db named "lolest"
-# and collections named "players" to store players' info
-# and "teams" to store teams' info
-client = pymongo.MongoClient("mongodb+srv://billy:test@lolest0-t8qkt.mongodb.net/test?retryWrites=true&w=majority") 
-#this gives us access to the atlas cluster
-db = client.testdata #testdata is
-collection = db.testCollection
-# teams = db.teams
+@app.route('/', methods=['GET'])        # for testing
+def index():                             
+    data = Player.get_teams()
+    return render_template('index.html', data = data)
 
-@app.route('/')
-def index():
-    names = "Names: "
-    for document in collection.find({}, {"_id":0, "name":1}):
-        names += document["name"] + " "
-    return render_template('index.html', data = names)
+@app.route('/players', methods=['GET'])  # retrieve all players' name
+def players():
+    try:
+        players = Player.get_players()
+    except e as Exception:
+        print("err: ", e)
+    return players
 
-@app.route('/teams') # take note of this decorator syntax, it's a common pattern
+@app.route('/teams', methods=['GET'])    # retrieve all teams' name
 def teams():
-    # It is good practice to only call a function in your route end-point,
-    # rather than have actual implementation code here.
-    # This allows for easier unit and integration testing of your functions.
-    return get_teams()
+    try:
+        teams = Player.get_teams()
+    except e as Exception:
+        print("err: ", e)
+    return teams
 
+@app.route('/leagues', methods=['GET'])   # retrieve the whole league in json
+def leagues():
+    try:
+        data = Player.get_league()
+    except e as Exception:
+        print("err: ", e)
+    return data
 
-def get_teams():
-    teams_list = ['TSM', 'C9', 'TL', 'CG', 'OG', '100T', 'EF', 'GG', 'CLG', 'FQ']
-    return random.choice(teams_list)
+@app.route('/<player>', methods=['GET']) # retrieve a player's document
+def get_selected(player):
+    try:
+        selected = Player.find_one(player)
+    except e as Exception:
+        print("err: ", e)
+    return selected
 
 
 if __name__ == '__main__':

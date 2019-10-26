@@ -29,5 +29,6 @@ Having skills in MySQL (or any other database implementation), Flask would be gr
 4. Run "npm start" in code/StarterCode/client to start the React server.
 5. Install flask (pip install flask).
 6. Start the server. Go to the server directory and do "python server.py".
-7. It is working if it displays an image with all the teams in the LCS and prints out "Retrieved team from backend: {some team}" underneath.
-8. If you receive an error "access to xmlhttprequest at from origin has been blocked by cors policy" you may need to download this chrome extension or equivalent https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=en
+7. Go to localhost:8080
+8. It is working if it displays an image with all the teams in the LCS and prints out "Retrieved team from backend: {some team}" underneath.
+9. If you receive an error "access to xmlhttprequest at from origin has been blocked by cors policy" you may need to download this chrome extension or equivalent https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=en
