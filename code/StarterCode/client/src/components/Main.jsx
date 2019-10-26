@@ -1,4 +1,8 @@
 import React from "react";
+import { Image, Button, ButtonToolbar, ButtonGroup } from "react-bootstrap";
+import MainHeader from "./MainHeader.jsx";
+import homeBackground from '../images/homeBackground1.jpg';
+import './Main.css';
 
 const axios = require('axios');
 
@@ -6,7 +10,7 @@ class Main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.getTeams();
+        // this.getTeams();
     }
 
     getTeams = () => {
@@ -26,7 +30,16 @@ class Main extends React.Component {
       const { team } = this.state;
       return (
         <div>
-          {team && <div> Retrieved team from backend: {team} </div>}
+          {/* {team && <div> Retrieved team from backend: {team} </div>} */}
+          <MainHeader />
+          <Image src={homeBackground} className="w-100 p-0"/>
+          <ButtonToolbar className="buttons">
+            <div>
+              <Button variant="info">Stream</Button>
+              {'              '}
+              <Button variant="success">Data</Button>
+            </div>
+          </ButtonToolbar>
         </div>      
       );
     }
