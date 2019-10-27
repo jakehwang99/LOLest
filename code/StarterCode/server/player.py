@@ -77,4 +77,5 @@ class Player:
     @staticmethod
     def find_one(player_name):
         data = lolMongo.LCS_Summer_2019.find_one({"PLAYER": player_name}, {"_id":0})  # return the player's document
-        return data
+        to_json = json.dumps({"data": data})
+        return to_json
