@@ -1,0 +1,109 @@
+swagger: '2.0'
+info:
+  description: |2
+  version: 1.0.0
+  title: League of Legend Stat Tracker
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: byang33@ucsc.edu
+  # license:
+  #   name: Apache 2.0
+  #   url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: 127.0.0.1:5000
+basePath: /
+tags:
+  - name: API calls
+    description: MongoDB -> Flask -> React
+schemes:
+  - https
+  - http
+paths:
+  /{League_Season_Year}:
+    get:
+      tags:
+        - API calls
+      summary: retrieve data from this tourney
+      description: for example, LCK_Summer_2019
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: League_Season_Year
+          in: path
+          description: League_Season_Year
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: ''
+  '/{League_Season_Year}/players':
+    get:
+      tags:
+        - API calls
+      summary: retrieve list of players in this tourney
+      description: list of players' name
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: League_Season_Year
+          in: path
+          description: League_Season_Year
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: ''
+  '/{League_Season_Year}/teams':
+    get:
+      tags:
+        - API calls
+      summary: retrieve list of teams in this tourney
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: League_Season_Year
+          in: path
+          description: League_Season_Year
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: ''
+  '/{League_Season_Year}/{player_name}':
+    get:
+      tags:
+        - API calls
+      summary: retrieve specific player's performance
+      description: ''
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: League_Season_Year
+          in: path
+          description: 'In the format of {league_name}_{season}_{year}'
+          required: true
+          type: string
+        - name: player_name
+          in: path
+          description: 'name of the player'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 'successful operation'
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
