@@ -1,6 +1,6 @@
 import pymongo
 import json
-from our_mongo import lolMongo
+from .our_mongo import lolMongo
 
 class Player:
 

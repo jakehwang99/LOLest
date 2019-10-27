@@ -11,7 +11,7 @@ class DataPage extends React.Component {
     }
 
     getTeams = () => {
-        axios.get('http://localhost:5000/teams')
+        axios.get('http://localhost:5000/players')
           .then((response) => {
             // handle success
             this.setState({ team: response.data });
@@ -25,10 +25,11 @@ class DataPage extends React.Component {
 
     render () {
       const { team } = this.state;
+      
       return (
         <div>
           <MainHeader />
-          {team && <div> Retrieved team from backend: {team} </div>}
+          {team && <div> Retrieved team from backend: {team[0]} </div>}
         </div>      
       );
     }
