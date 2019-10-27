@@ -1,6 +1,6 @@
 import pymongo
 import json
-from .our_mongo import lolMongo
+from our_mongo import lolMongo
 
 class Player:
 
@@ -54,28 +54,28 @@ class Player:
         return player_json
 
     @staticmethod
-    def get_players():
-        data = lolMongo.LCS_Summer_2019.find().distinct("PLAYER")  # return a list of players
+    def get_players(tourney):
+        data = lolMongo.db.get_collection(tourney).find().distinct("PLAYER")  # return a list of players
         to_json = json.dumps({"data": data})
         return to_json
 
     @staticmethod
-    def get_teams():
-        data = lolMongo.LCS_Summer_2019.find().distinct("TEAM")    # return a list of teams
+    def get_teams(tourney):
+        data = lolMongo.db.get_collection(tourney).find().distinct("TEAM")    # return a list of teams
         to_json = json.dumps({"data": data})
         return to_json
 
     @staticmethod
-    def get_league():
+    def get_tourney(tourney):
         data = []
-        ret = lolMongo.LCS_Summer_2019.find({}, {"_id":0})         # return a list of documents
+        ret = lolMongo.db.get_collection(tourney).find({}, {"_id":0})         # return a list of documents
         for doc in ret:
             data.append(doc)
         to_json = json.dumps({"data": data})
         return to_json
 
     @staticmethod
-    def find_one(player_name):
-        data = lolMongo.LCS_Summer_2019.find_one({"PLAYER": player_name}, {"_id":0})  # return the player's document
+    def find_one(tourney, player_name):
+        data = lolMongo.db.get_collection(tourney).find_one({"PLAYER": player_name}, {"_id":0})  # return the player's document
         to_json = json.dumps({"data": data})
         return to_json
