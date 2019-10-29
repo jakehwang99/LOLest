@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Button, ButtonToolbar, ButtonGroup } from "react-bootstrap";
+import { Image, Button, ButtonToolbar } from "react-bootstrap";
 import MainHeader from "./MainHeader.jsx";
 import homeBackground from '../images/homeBackground1.jpg';
 import './Main.css';

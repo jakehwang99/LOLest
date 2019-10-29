@@ -1,0 +1,13 @@
+.sidebar {
+    padding-top: 1rem;
+    width: 15rem;
+}
+
+.body {
+    height: 54rem;
+    background-color: dimgrey;
+}
+
+.tabs {
+    padding-left: 15rem;
+}
