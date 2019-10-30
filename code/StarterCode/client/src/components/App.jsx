@@ -12,7 +12,6 @@ export default class App extends React.Component {
     render () {
         return (
             <div>
-                <img style={css} src={backgroundimg} />
                 <Main />
             </div>      
         );
