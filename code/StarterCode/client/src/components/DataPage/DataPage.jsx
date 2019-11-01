@@ -36,24 +36,39 @@ class DataPage extends React.Component {
         })
     }
 
+    getData = (url) => {
+      axios.get(url)
+          .then((response) => {
+            // handle success
+            this.setState({ leagueData: response.data.data });
+            console.log(response.data.data);
+        })
+          .catch(function (error) {
+            // handle error
+        console.log(error);
+        })
+    }
+
     onClickLCS = () => {
-      const url = "http://localhost:5000/LCS_Summer_2019/players";
-      this.getPlayers(url);
+      const playersUrl = "http://localhost:5000/LCS_Summer_2019/players";
+      const leagueUrl = "http://localhost:5000/LCS_Summer_2019";
+      this.getPlayers(playersUrl);
+      this.getData(leagueUrl);
     }
 
     onClickLEC = () => {
-      const url = "http://localhost:5000/LEC_Summer_2019/players";
-      this.getPlayers(url);
+      const playersUrl = "http://localhost:5000/LEC_Summer_2019/players";
+      this.getPlayers(playersUrl);
     }
 
     onClickLCK = () => {
-      const url = "http://localhost:5000/LCK_Summer_2019/players";
-      this.getPlayers(url);
+      const playersUrl = "http://localhost:5000/LCK_Summer_2019/players";
+      this.getPlayers(playersUrl);
     }
 
     onClickLPL = () => {
-      const url = "http://localhost:5000/LPL_Summer_2019/players";
-      this.getPlayers(url);
+      const playersUrl = "http://localhost:5000/LPL_Summer_2019/players";
+      this.getPlayers(playersUrl);
     }
 
     formatPlayers = (data) => {
@@ -69,7 +84,7 @@ class DataPage extends React.Component {
     }
 
     render () {
-      const { sidebarOpen, options } = this.state;
+      const { sidebarOpen, options, leagueData } = this.state;
       
       return (
         <div>
@@ -96,7 +111,7 @@ class DataPage extends React.Component {
             </Button>
           </Sidebar>
 
-          <Body options={options} />
+          <Body options={options} leagueData={leagueData} />
 
         </div>      
       );
