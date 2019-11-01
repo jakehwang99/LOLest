@@ -2,24 +2,14 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs";
 import Select from 'react-select';
+import Table from './Table.jsx';
 import './datapagelayout.css';
 import 'react-tabs/style/react-tabs.css';
-
-// const options = [
-//   { value: 'chocolate', label: 'Chocolate' },
-//   { value: 'strawberry', label: 'Strawberry' },
-//   { value: 'vanilla', label: 'Vanilla' },
-// ];
 
 class Body extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            options: [
-              { value: 'chocolate', label: 'Chocolate' },
-              { value: 'strawberry', label: 'Strawberry' },
-              { value: 'vanilla', label: 'Vanilla' },
-            ],
             activeTab: 1,
             selectedOption: null,
         };
@@ -34,7 +24,7 @@ class Body extends React.Component {
 
     render () {
       const { activeTab, selectedOption } = this.state;
-      const { options } = this.props;    
+      const { options, leagueData } = this.props;    
       return (
         <div className="body">
             <div className="tabs">
@@ -49,7 +39,7 @@ class Body extends React.Component {
                   <Tab> Line Chart </Tab>
                   <Tab> Bar Graph </Tab>
               </TabList>
-              <TabPanel>Table</TabPanel>
+              <TabPanel><Table data={leagueData} /></TabPanel>
               <TabPanel>Line Chart</TabPanel>
               <TabPanel>Bar Graph</TabPanel>
             </Tabs>
@@ -61,6 +51,7 @@ class Body extends React.Component {
 
 Body.propTypes = {
   options: PropTypes.array,
+  leagueData: PropTypes.array,
 };
 
 export default Body;

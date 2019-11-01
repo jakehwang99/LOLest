@@ -51,6 +51,7 @@
     "react-router-dom": "^5.1.2",
     "react-select": "^3.0.8",
     "react-sidebar": "^3.0.2",
+    "react-table": "^6.10.3",
     "react-tabs": "^3.0.0",
     "style-loader": "^1.0.0"
   }
