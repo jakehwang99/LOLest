@@ -71,7 +71,7 @@ class Table extends React.Component {
                         accessor: "GPM"  
                     },
                     {
-                        Header: "",
+                        Header: "Kill Participation",
                         accessor: "KPAR"  
                     },
                     {
@@ -79,11 +79,11 @@ class Table extends React.Component {
                         accessor: "KS"  
                     },
                     {
-                        Header: "",
+                        Header: "Goal Share",
                         accessor: "GS"  
                     },
                     {
-                        Header: "",
+                        Header: "Champion Pool",
                         accessor: "CP"  
                     },
                     {
