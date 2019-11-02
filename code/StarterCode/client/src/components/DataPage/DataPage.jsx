@@ -58,17 +58,23 @@ class DataPage extends React.Component {
 
     onClickLEC = () => {
       const playersUrl = "http://localhost:5000/LEC_Summer_2019/players";
+      const leagueUrl = "http://localhost:5000/LEC_Summer_2019";
       this.getPlayers(playersUrl);
+      this.getData(leagueUrl);
     }
 
     onClickLCK = () => {
       const playersUrl = "http://localhost:5000/LCK_Summer_2019/players";
+      const leagueUrl = "http://localhost:5000/LCK_Summer_2019";
       this.getPlayers(playersUrl);
+      this.getData(leagueUrl);
     }
 
     onClickLPL = () => {
       const playersUrl = "http://localhost:5000/LPL_Summer_2019/players";
+      const leagueUrl = "http://localhost:5000/LPL_Summer_2019";
       this.getPlayers(playersUrl);
+      this.getData(leagueUrl);
     }
 
     formatPlayers = (data) => {
