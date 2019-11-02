@@ -2,8 +2,12 @@ import requests
 from bs4 import BeautifulSoup
 
 import pandas as pd
+import json
+
 import time
 from numpy import random
+
+from pymongo import MongoClient
 
 def geturl(league, year, season):
     if league == "LCS":
@@ -57,13 +61,19 @@ def getdf(soup):
     return df
 
 if __name__ == '__main__':
+
+    client = MongoClient("mongodb+srv://billy:test@lolest0-t8qkt.mongodb.net/test?retryWrites=true&w=majority")
+    db = client["LOLesports"]
+
     leagues = ["LCS", "LCK", "LEC", "LPL"]    
     seasons = ["Spring", "Summer"]
 
     for league in leagues:
         for season in seasons:
             for year in range(2013,2050):
-                print("Analyzing stats from {0} {1} {2}...".format(league, season, year))
+                currentMatch = "{0}-{1}-{2}".format(league, season, year)
+                
+                print("Analyzing stats from {0}...".format(currentMatch))
 
                 url = geturl(league, year, season)
                 if url == None:
@@ -80,9 +90,17 @@ if __name__ == '__main__':
                 if df.empty:
                     print("No data for future year\n")
                     break
+                
+                db.drop_collection(currentMatch)
+                col = db[currentMatch]                
+                
+                print("Loading data into MongoDB document...\n")
+                data = json.loads(df.T.to_json()).values()
+                col.insert_many(data)
+                
+                #print("writing data to {0}.csv\n".format(currentMatch))
+                #df.to_csv("data/{0}.csv".format(currentMatch), index=False)
 
-                #print("writing data to {0}-{1}-{2}.csv\n".format(league, season, year))
-                #df.to_csv("data/{0}-{1}-{2}.json".format(league, season, year), index=False)
-                print("writing data to {0}-{1}-{2}.json\n".format(league, season, year))
-                df.to_json("data/{0}-{1}-{2}.json".format(league, season, year), orient='table', index=False)
+                #print("writing data to {0}.json\n".format(currentMatch))
+                #df.to_json("data/{0}.json".format(currentMatch), orient='table', index=False)
 
