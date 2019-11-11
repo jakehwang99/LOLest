@@ -35,9 +35,9 @@ class Main extends React.Component {
           <Image src={homeBackground} className="w-100 p-0"/>
           <ButtonToolbar className="buttons">
             <div>
-              <Button variant="info">Stream</Button>
+              <Button variant="info" href="http://localhost:8080/stream">Stream</Button>
               {'              '}
-              <Button variant="success">Data</Button>
+              <Button variant="success" href="http://localhost:8080/stream">Data</Button>
             </div>
           </ButtonToolbar>
         </div>      
