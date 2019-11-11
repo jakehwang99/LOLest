@@ -37,7 +37,7 @@ class Main extends React.Component {
             <div>
               <Button variant="info" href="http://localhost:8080/stream">Stream</Button>
               {'              '}
-              <Button variant="success" href="http://localhost:8080/stream">Data</Button>
+              <Button variant="success" href="http://localhost:8080/data">Data</Button>
             </div>
           </ButtonToolbar>
         </div>      
