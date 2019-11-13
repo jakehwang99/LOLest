@@ -15,7 +15,7 @@ class MainHeader extends React.Component {
       return (
         <div className="d-inline-block">
           <Navbar bg="white">
-            <Navbar.Brand href="#home">
+            <Navbar.Brand href="http://localhost:8080">
               <Button variant="light">
                 <img
                   src={logo}
