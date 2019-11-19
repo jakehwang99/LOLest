@@ -94,10 +94,6 @@ class DataPage extends React.Component {
       
       return (
         <div>
-          <div>
-            <MainHeader />
-          </div>
-
           <Sidebar
             sidebarClassName="sidebar"
             sidebar={
@@ -116,6 +112,9 @@ class DataPage extends React.Component {
               <Image src={SidebarIcon}/>
             </Button>
           </Sidebar>
+          <div>
+            <MainHeader />
+          </div>
 
           <Body options={options} leagueData={leagueData} />
 
