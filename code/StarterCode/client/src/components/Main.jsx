@@ -13,11 +13,12 @@ class Main extends React.Component {
         this.data = null;
         this.state = {};
     }
-    
+
     render () {
       const { team } = this.state;
       return (
         <div>
+            <h1> Hello </h1>
         </div>
       );
     }
