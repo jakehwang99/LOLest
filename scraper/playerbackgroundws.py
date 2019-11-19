@@ -11,7 +11,7 @@ db = client['LOLplayers']
 
 
 leagues = ['LCS', 'LCK', 'LEC', 'LPL']
-columns = ['Name', 'Country of Birth', 'Birthday', 'Residency', 'Team', 'Role']
+columns = ['Name', 'Country of Birth', 'Birthday', 'Residency', 'Team', 'Role', 'IGN']
 df = pd.DataFrame(columns=columns)
 for league in leagues:
     url = 'https://lol.gamepedia.com/' + league + '/2019_Season/Spring_Season/Player_Statistics'
@@ -63,7 +63,7 @@ for league in leagues:
                     team = teamname.text
                 elif(td[0].text == 'Role'):
                     role = td[1].text
-        background = {'Name': [name], 'Country of Birth': [bCountry], 'Birthday': [birthday], 'Residency': [residence], 'Team': [team], 'Role': [role]}
+        background = {'Name': [name], 'Country of Birth': [bCountry], 'Birthday': [birthday], 'Residency': [residence], 'Team': [team], 'Role': [role], 'IGN': [player]}
         dfRow = pd.DataFrame(background, columns = columns)
         df = pd.concat([df, dfRow], ignore_index=True)
     
