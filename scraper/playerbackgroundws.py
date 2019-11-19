@@ -66,7 +66,9 @@ for league in leagues:
         background = {'Name': [name], 'Country of Birth': [bCountry], 'Birthday': [birthday], 'Residency': [residence], 'Team': [team], 'Role': [role], 'IGN': [player]}
         dfRow = pd.DataFrame(background, columns = columns)
         df = pd.concat([df, dfRow], ignore_index=True)
-    
+
+    print("adding {0}...".format(league))
+    db.drop_collection(league)
     collection = db[league]
     data = json.loads(df.T.to_json()).values()
     collection.insert_many(data)
