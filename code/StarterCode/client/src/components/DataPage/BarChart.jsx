@@ -1,6 +1,19 @@
 import React from 'react'
 import RadioButtonGroup from './RadioButtonGroup.jsx'
 
+let colors = {
+    "Cloud9": "#87ceeb",
+    "100 Thieves": "#8b0000",
+    "Clutch Gaming": "#ff6961",
+    "Counter Logic Gaming": "#0277bd",
+    "Echo Fox": "#ffa500",
+    "FlyQuest": "#013920",
+    "Golden Guardians": "#fcc201",
+    "OpTic Gaming": "#95f985",
+    "Team Liquid": "#003366",
+    "Team SoloMid": "#999999"
+}
+
 class BarChart extends React.Component {
     constructor(props) {
         super(props)
@@ -30,7 +43,7 @@ class BarChart extends React.Component {
         } 
         const node = this.node // the svg element itself
 
-        let mtop = 30, mright = 30, mbot = 30, mleft = 60
+        let mtop = 30, mright = 30, mbot = 60, mleft = 60
         let width = this.props.size[0] - mleft - mright;
         let height = this.props.size[1] - mtop - mbot
 
@@ -83,7 +96,7 @@ class BarChart extends React.Component {
                 .attr("y", d => {return yScale(d.CS)})
                 .attr("width", xScale.bandwidth())
                 .attr("height", d => {return height - yScale(d.CS)})
-                .attr("fill", "#f53505")
+                .attr("fill", d => { return colors[d.TEAM]})
                 .attr("class", "mybar")
 
 
@@ -137,7 +150,10 @@ class BarChart extends React.Component {
                     <svg ref={node => this.node = node}
                         width={this.props.size[0]} height={this.props.size[1]}>
                     </svg>
-                    <RadioButtonGroup selections={choices} handleClick={this.handleClick.bind(this)}/>
+                    <p>Select team:</p>
+                    <RadioButtonGroup selections={choices} default="Cloud9" handleClick={this.handleClick.bind(this)} />
+                    <p>Select role:</p>
+                    <RadioButtonGroup selections={choices} default="ADC" handleClick={this.handleClick.bind(this)} />
                 </div>
             )
         }
