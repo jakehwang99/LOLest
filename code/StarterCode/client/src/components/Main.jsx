@@ -1,4 +1,8 @@
 import React from "react";
+import { Image, Button, ButtonToolbar } from "react-bootstrap";
+import MainHeader from "./MainHeader.jsx";
+import homeBackground from '../images/homeBackground1.jpg';
+import './Main.css';
 
 const axios = require('axios');
 
@@ -15,11 +19,18 @@ class Main extends React.Component {
     }
 
     render () {
-      const { team } = this.state;
       return (
         <div>
-            <h1> Hello </h1>
-        </div>
+          <MainHeader />
+          <Image src={homeBackground} className="w-100 p-0"/>
+          <ButtonToolbar className="buttons">
+            <div>
+              <Button variant="info" href="http://localhost:8080/stream">Stream</Button>
+              {'              '}
+              <Button variant="success" href="http://localhost:8080/data">Data</Button>
+            </div>
+          </ButtonToolbar>
+        </div>      
       );
     }
 }

@@ -1,10 +1,9 @@
 import React from "react";
-import Main from './Main';
-import Graph from './Graph';
-import Parallel from './Parallel';
-import css from '../css/page.css';
-import backgroundimg from '../images/lolestBackgroundImage.jpg';
-
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+import Main from './Main.jsx';
+import DataPage from './DataPage/DataPage.jsx';
+import StreamPage from './StreamPage/StreamPage.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -13,13 +12,13 @@ export default class App extends React.Component {
 
     render () {
         return (
-            <div>
-                <Main />
-                <Graph />
+            <Router>
                 <div>
-                    <Parallel data={[5,10,1,3]} size={[500,500]} />
+                    <Route exact path="/" component={Main} />
+                    <Route path="/data" component={DataPage} />
+                    <Route path="/stream" component={StreamPage} />
                 </div>
-            </div>      
+            </Router>    
         );
     }
 }
