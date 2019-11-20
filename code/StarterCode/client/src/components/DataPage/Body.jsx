@@ -19,24 +19,24 @@ class Body extends React.Component {
     }
 
     handleChange = selectedOption => {
-      const player_name = "Perry"
-      const player_url = `http://localhost:5000/LCK/${player_name}/page`;
+      this.setState({ selectedOption });
+
+      const player_name = selectedOption.value;
+      const league = this.props.league;
+      const player_url = `http://localhost:5000/${league}/${player_name}/page`;
 
       axios.get(player_url)
           .then((response) => {
-                this.setState({ playerPage: response.data.data });
+                this.setState({ playerPage: response.data.data },
+                  () => console.log(`Option selected:`, selectedOption, this.state.playerPage));
           })
           .catch(function (error) {
                 console.log(error);
-        })
-      this.setState(
-        { selectedOption },
-        () => console.log(`Option selected:`, this.state.selectedOption, this.state.playerPage)
-      );
+          })   
     };
 
     render () {
-      const { activeTab, selectedOption } = this.state;
+      const { activeTab, selectedOption, playerPage } = this.state;
       const { options, leagueData } = this.props;   
       
       return (
@@ -58,7 +58,7 @@ class Body extends React.Component {
               <TabPanel>Line Chart</TabPanel>
               <TabPanel>Bar Graph</TabPanel>
               <TabPanel>
-                 <Cards />
+                  { playerPage && <Cards playerPage={playerPage} /> }
               </TabPanel>
             </Tabs>
             </div>
@@ -70,6 +70,7 @@ class Body extends React.Component {
 Body.propTypes = {
   options: PropTypes.array,
   leagueData: PropTypes.array,
+  league: PropTypes.string,
 };
 
 export default Body;

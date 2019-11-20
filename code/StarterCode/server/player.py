@@ -90,6 +90,6 @@ class Player:
 
     @staticmethod
     def get_player(league, player_name):
-        data = lolMongoPlayers.db.get_collection("test").find_one({"Name": player_name}, {"_id":0})
+        data = lolMongoPlayers.db.get_collection(league).find_one({"IGN": player_name}, {"_id":0})
         to_json = json.dumps({"data": data})
         return to_json
