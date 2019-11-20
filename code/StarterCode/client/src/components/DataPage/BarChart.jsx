@@ -1,4 +1,5 @@
 import React from 'react'
+import RadioButtonGroup from './RadioButtonGroup.jsx'
 
 class BarChart extends React.Component {
     constructor(props) {
@@ -115,9 +116,30 @@ class BarChart extends React.Component {
     render() {
         // Render returns an SVG element waiting for our D3 code
         // Here, node passes a reference for D3 to use
-        return <svg ref={node => this.node = node}
-                width={this.props.size[0]} height={this.props.size[1]}>
-        </svg>
+        if(this.props.data != null) {
+            let choices = []
+            for(let d of this.props.data) {
+                if (!choices.includes(d.TEAM)) {
+                    choices.push(d.TEAM)
+                } 
+            }
+            return (
+                <div>
+                    <svg ref={node => this.node = node}
+                        width={this.props.size[0]} height={this.props.size[1]}>
+                    </svg>
+                    <RadioButtonGroup selections={choices}/>
+                </div>
+            )
+        }
+        return (
+            <div>
+                <svg ref={node => this.node = node}
+                    width={this.props.size[0]} height={this.props.size[1]}>
+                </svg>
+            </div>
+        )
+
     }
 }
 
