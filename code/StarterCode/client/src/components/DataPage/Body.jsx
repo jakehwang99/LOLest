@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs";
 import Select from 'react-select';
 import Table from './Table.jsx';
+import BarChart from './BarChart.jsx';
 import './datapagelayout.css';
 import 'react-tabs/style/react-tabs.css';
 
@@ -41,7 +42,7 @@ class Body extends React.Component {
               </TabList>
               <TabPanel><Table data={leagueData} /></TabPanel>
               <TabPanel>Line Chart</TabPanel>
-              <TabPanel>Bar Graph</TabPanel>
+              <TabPanel><BarChart appData={[5,10,1,3]} size={[200,500]} data={leagueData} />Bar Graph</TabPanel>
             </Tabs>
             </div>
         </div>      
