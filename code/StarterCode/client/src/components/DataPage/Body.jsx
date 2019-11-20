@@ -42,7 +42,7 @@ class Body extends React.Component {
               </TabList>
               <TabPanel><Table data={leagueData} /></TabPanel>
               <TabPanel>Line Chart</TabPanel>
-              <TabPanel><BarChart appData={[5,10,1,3]} size={[200,500]} data={leagueData} />Bar Graph</TabPanel>
+              <TabPanel><BarChart size={[1000,1000]} data={leagueData} />Bar Graph</TabPanel>
             </Tabs>
             </div>
         </div>      
