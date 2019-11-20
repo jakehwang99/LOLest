@@ -20,10 +20,12 @@ class BarChart extends React.Component {
 
     createBarChart() {
         console.log(this.props.data)
+
+        // Can't create chart if data has not been selected yet
         if(this.props.data == null) {
             return
         } 
-        const node = this.node // the element itself
+        const node = this.node // the svg element itself
 
         let mtop = 30, mright = 30, mbot = 140, mleft = 60
         let width = this.props.size[0] - mleft - mright;
@@ -37,9 +39,11 @@ class BarChart extends React.Component {
             )
             .padding(0.2)
 
-        d3.select(node)
-            .append("g")
-            .attr("transform", "translate(50," + height + ")")
+        let svg = d3.select(node).append("g")
+            .attr("transform", "translate(" + mleft + "," + mtop + ")")
+
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(xScale))
             .selectAll("text")
                 .attr("transform", "translate(0,0)rotate(0)")
@@ -49,30 +53,26 @@ class BarChart extends React.Component {
             .domain([0, 400])
             .range([height, 0])
 
-        d3.select(node)
-            .append("g")
-            .attr("transform", "translate(50,0)")
+        svg.append("g")
+            .attr("transform", "translate(0,0)")
             .call(d3.axisLeft(yScale))
             .attr("font-size", "24px")
 
-        d3.select(node)
-            .append("g")
-                .attr("class", "chartHolder")
-                .attr("transform", "translate(50,0)")
+        svg.append("g")
+            .attr("class", "chartHolder")
+            .attr("transform", "translate(0,0)")
             .selectAll("rect")
             .data(this.props.data.filter(d => {return d.TEAM == "Cloud9"}))
             .enter()
             .append("rect")
 
-        d3.select(node)
-            .select("g.chartHolder")
+        svg.select("g.chartHolder")
             .selectAll("rect")
             .data(this.props.data.filter(d => {return d.TEAM == "Cloud9"}))
             .exit()
             .remove()
 
-        d3.select(node)
-            .select("g.chartHolder")
+        svg.select("g.chartHolder")
             .selectAll("rect")
                 .attr("x", d => {return xScale(d.PLAYER)})
                 .attr("y", d => {return yScale(d.CS)})
