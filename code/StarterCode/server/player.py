@@ -91,5 +91,12 @@ class Player:
     @staticmethod
     def get_player(league, player_name):
         data = lolMongoPlayers.db.get_collection(league).find_one({"IGN": player_name}, {"_id":0})
+        # handle the inconsistency of Lower/Upper case of name stored
+        if not data:
+            if player_name[0].isupper():
+                player_name = player_name[0].lower() + player_name[1:]
+            else:
+                player_name = player_name.capitalize()
+            data = lolMongoPlayers.db.get_collection(league).find_one({"IGN": player_name}, {"_id":0})
         to_json = json.dumps({"data": data})
         return to_json
