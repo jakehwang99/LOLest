@@ -84,6 +84,10 @@ for league in leagues:
         except KeyError:
             continue
 
+        if ' ' in player:
+            playerName = (player.split(' '))
+            player = playerName[0]
+            
         background = {'Name': [name], 'Country of Birth': [bCountry], 'Birthday': [birthday], 'Residency': [residence], 'Team': [team], 'Role': [role], 'IGN': [player], 'Image' : [playerimg]}
         dfRow = pd.DataFrame(background, columns = columns)
         df = pd.concat([df, dfRow], ignore_index=True)
