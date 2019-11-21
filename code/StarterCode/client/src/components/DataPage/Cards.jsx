@@ -15,7 +15,7 @@ class Cards extends React.Component {
         return(
             <div>
                 <Card className="text-center">
-                    <Card.Img className="mx-auto d-block" style={{ width: '18rem' }} variant="top" src={Faker} />
+                    <Card.Img className="mx-auto d-block" style={{ width: '18rem' }} variant="top" src={playerPage.Image} />
                     <Card.Body>
                         <ListGroup className="list-group-flush">
                             <ListGroupItem>
