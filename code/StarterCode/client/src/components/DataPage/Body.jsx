@@ -4,6 +4,7 @@ import { Tabs, Tab, TabList, TabPanel } from "react-tabs";
 import Select from 'react-select';
 import Table from './Table.jsx';
 import BarChart from './BarChart.jsx';
+import ParallelCoords from './ParallelCoords.jsx'
 import './datapagelayout.css';
 import 'react-tabs/style/react-tabs.css';
 
@@ -41,8 +42,8 @@ class Body extends React.Component {
                   <Tab> Bar Graph </Tab>
               </TabList>
               <TabPanel><Table data={leagueData} /></TabPanel>
-              <TabPanel>Line Chart</TabPanel>
-              <TabPanel><BarChart size={[800,560]} data={leagueData} /></TabPanel>
+              <TabPanel><ParallelCoords size={[1200, 760]} data={leagueData} /></TabPanel>
+              <TabPanel><BarChart size={[1200,760]} data={leagueData} /></TabPanel>
             </Tabs>
             </div>
         </div>      

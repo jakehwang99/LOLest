@@ -17,7 +17,7 @@ let colors = {
 class BarChart extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {team: 'Cloud9'}
+        this.state = {teams: ['Cloud9']}
         // Bind component as context to any new internal functions
         // (Doesn't need to be done for existing lifecycle functions)
         this.createBarChart = this.createBarChart.bind(this)
@@ -43,29 +43,42 @@ class BarChart extends React.Component {
         } 
         const node = this.node // the svg element itself
 
-        let mtop = 30, mright = 30, mbot = 60, mleft = 60
+        let mtop = 30, mright = 30, mbot = 100, mleft = 60
         let width = this.props.size[0] - mleft - mright;
         let height = this.props.size[1] - mtop - mbot
 
-        let xScale = d3.scaleBand()
-            .range([0, width])
-            .domain(this.props.data
-                .filter(d => {return d.TEAM == this.state.team})
-                .map(d => { return d.PLAYER })
-            )
-            .padding(0.2)
+        // Filter for only the players that we want
+        let selection = this.props.data.filter(
+            d => {for(let t of this.state.teams) {
+                    if (d.TEAM == t) {
+                        return true 
+                    }
+                }
+                return false
+            }
+        )
 
+        // Remove all elements from previous graphs
+        // TODO: make this a transition instead
         d3.select(node).selectAll("g").remove()
 
+        // Use a g element rather than the svg directly to account for margins
         let svg = d3.select(node).append("g")
             .attr("transform", "translate(" + mleft + "," + mtop + ")")
+
+        // Create the scales for x and y axis
+        let xScale = d3.scaleBand()
+            .range([0, width])
+            .domain(selection.map(d => { return d.PLAYER }))
+            .padding(0.2)
 
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(xScale))
             .selectAll("text")
-                .attr("transform", "translate(0,0)rotate(0)")
-                .style("font-size", "16px")
+                .attr("transform", "translate(0,0)rotate(-45)")
+                .attr("text-anchor", "end")
+                .style("font-size", Math.floor(xScale.bandwidth()/3.5) + "px")
 
         let yScale = d3.scaleLinear()
             .domain([0, 400])
@@ -76,17 +89,19 @@ class BarChart extends React.Component {
             .call(d3.axisLeft(yScale))
             .attr("font-size", "24px")
 
+
+        // Create the bar chart
         svg.append("g")
             .attr("class", "chartHolder")
             .attr("transform", "translate(0,0)")
             .selectAll("rect")
-            .data(this.props.data.filter(d => {return d.TEAM == this.state.team}))
+            .data(selection)
             .enter()
             .append("rect")
 
         svg.select("g.chartHolder")
             .selectAll("rect")
-            .data(this.props.data.filter(d => {return d.TEAM == this.state.team}))
+            .data(selection)
             .exit()
             .remove()
 
@@ -97,42 +112,27 @@ class BarChart extends React.Component {
                 .attr("width", xScale.bandwidth())
                 .attr("height", d => {return height - yScale(d.CS)})
                 .attr("fill", d => { return colors[d.TEAM]})
-                .attr("class", "mybar")
+                .on("mouseover", d => {
+                    svg.select("g.chartHolder").selectAll("rect.tooltip")
+                        .remove()
+                    svg.select("g.chartHolder").append("rect")
+                        .attr("className", "tooltip")
+                        .attr("x", xScale(d.PLAYER))
+                        .attr("y", yScale(d.CS))
+                        .attr("width", xScale.bandwidth())
+                        .attr("height", "50px")
+                        .attr("fill", "#000000")
+                })
+                .on("mouseout", d => {
+                    svg.select("g.chartHolder").selectAll(".tooltip")
+                        .remove()
+                })
 
 
-        /*
-        // Example code for integrating D3 with React
-        const dataMax = d3.max(this.props.appData)
-        const yScale = d3.scaleLinear()
-            .domain([0, dataMax])
-            .range([0, this.props.size[1]])
-
-        d3.select(node)
-            .selectAll("rect")
-            .data(this.props.appData)
-            .enter()
-            .append("rect")
-
-        d3.select(node)
-            .selectAll("rect")
-            .data(this.props.appData)
-            .exit()
-            .remove()
-
-        d3.select(node)
-            .selectAll("rect")
-            .data(this.props.appData)
-            .style("fill", "#fe9922")
-            .attr("x", (d,i) => i*25)
-            .attr("y", d => this.props.size[1] - yScale(d))
-            .attr("height", d => yScale(d))
-            .attr("width", 25)
-        */
     }
 
     handleClick(e) {
-        console.log("PAssed: " + e)
-        this.setState({team: e})
+        this.setState({teams: e})
     }
 
     render() {
@@ -159,9 +159,7 @@ class BarChart extends React.Component {
         }
         return (
             <div>
-                <svg ref={node => this.node = node}
-                    width={this.props.size[0]} height={this.props.size[1]}>
-                </svg>
+                Please select a league!
             </div>
         )
 
