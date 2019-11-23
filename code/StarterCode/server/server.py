@@ -3,7 +3,7 @@ import pymongo
 import json
 from flask import Flask, render_template
 from player import Player
-from our_mongo import lolMongo
+from our_mongo import lolMongo, lolMongoPlayers
 
 app = Flask(__name__)
 
@@ -48,6 +48,13 @@ def get_selected(tourney, player):
         print("err: ", e)
     return selected
 
+@app.route('/<league>/<player_name>/page', methods=['GET']) # retrieve a player's information
+def player(league, player_name):
+    try:
+        player = Player.get_player(league, player_name)
+    except Exception as e:
+        print("err: ", e)
+    return player
 
 if __name__ == '__main__':
     app.run()
