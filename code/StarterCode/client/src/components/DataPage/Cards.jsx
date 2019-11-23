@@ -10,46 +10,48 @@ class Cards extends React.Component {
     }
 
     render (){
+        const { playerPage } = this.props;
+
         return(
             <div>
                 <Card className="text-center">
-                    <Card.Img className="mx-auto d-block" style={{ width: '18rem' }} variant="top" src={Faker} />
+                    <Card.Img className="mx-auto d-block" style={{ width: '18rem' }} variant="top" src={playerPage.Image} />
                     <Card.Body>
                         <ListGroup className="list-group-flush">
                             <ListGroupItem>
                                 <Card.Title>Name</Card.Title>
                                 <Card.Text>
-                                    Player's name goes here
+                                    {playerPage.Name}
                                 </Card.Text>
                             </ListGroupItem>
                             <ListGroupItem>
                                 <Card.Title>Country of Birth</Card.Title>
                                 <Card.Text>
-                                    Country of Birth goes here
+                                    {playerPage['Country of Birth']}
                                 </Card.Text>
                             </ListGroupItem>
                             <ListGroupItem>
                                 <Card.Title>Birthday</Card.Title>
                                 <Card.Text>
-                                    Birthday goes here
+                                    {playerPage.Birthday}
                                 </Card.Text>
                             </ListGroupItem>
                             <ListGroupItem>
                                 <Card.Title>Residency</Card.Title>
                                 <Card.Text>
-                                    Residency goes here
+                                    {playerPage.Residency}
                                 </Card.Text>
                             </ListGroupItem>
                             <ListGroupItem>
                                 <Card.Title>Team</Card.Title>
                                 <Card.Text>
-                                    Team goes here
+                                    {playerPage.Team}
                                 </Card.Text>
                             </ListGroupItem>
                             <ListGroupItem>
                                 <Card.Title>Role</Card.Title>
                                 <Card.Text>
-                                    Role goes here
+                                    {playerPage.Role}
                                 </Card.Text>
                             </ListGroupItem>
                         </ListGroup>
@@ -62,7 +64,7 @@ class Cards extends React.Component {
 }
 
 Cards.propTypes = {
-    playerData: PropTypes.object,
+  playerPage: PropTypes.array,
 };
 
 export default Cards;

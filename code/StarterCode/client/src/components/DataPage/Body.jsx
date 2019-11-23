@@ -7,24 +7,39 @@ import Cards from './Cards.jsx';
 import './datapagelayout.css';
 import 'react-tabs/style/react-tabs.css';
 
+const axios = require('axios');
+
 class Body extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             activeTab: 0,
             selectedOption: null,
+            disablePlayerInfoTab: true,
         };
     }
 
     handleChange = selectedOption => {
-      this.setState(
-        { selectedOption },
-        () => console.log(`Option selected:`, this.state.selectedOption)
-      );
+      this.setState({ selectedOption });
+
+      const player_name = selectedOption.value;
+      const league = this.props.league;
+      const player_url = `http://localhost:5000/${league}/${player_name}/page`;
+
+      this.setState({ disablePlayerInfoTab: false });
+
+      axios.get(player_url)
+          .then((response) => {
+                this.setState({ playerPage: response.data.data },
+                  () => console.log(`Option selected:`, selectedOption, this.state.playerPage));
+          })
+          .catch(function (error) {
+                console.log(error);
+          })   
     };
 
     render () {
-      const { activeTab, selectedOption } = this.state;
+      const { activeTab, selectedOption, playerPage, disablePlayerInfoTab } = this.state;
       const { options, leagueData } = this.props;   
       
       return (
@@ -40,13 +55,13 @@ class Body extends React.Component {
                   <Tab> Table </Tab>
                   <Tab> Line Chart </Tab>
                   <Tab> Bar Graph </Tab>
-                  <Tab> Player Info </Tab>
+                  <Tab disabled={disablePlayerInfoTab}> Player Info </Tab>
               </TabList>
               <TabPanel><Table data={leagueData} /></TabPanel>
               <TabPanel>Line Chart</TabPanel>
               <TabPanel>Bar Graph</TabPanel>
               <TabPanel>
-                 <Cards />
+                  { playerPage && <Cards playerPage={playerPage} /> }
               </TabPanel>
             </Tabs>
             </div>
@@ -58,6 +73,7 @@ class Body extends React.Component {
 Body.propTypes = {
   options: PropTypes.array,
   leagueData: PropTypes.array,
+  league: PropTypes.string,
 };
 
 export default Body;
