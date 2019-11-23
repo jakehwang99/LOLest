@@ -61,4 +61,8 @@ class Cards extends React.Component {
 
 }
 
+Cards.propTypes = {
+    playerData: PropTypes.object,
+};
+
 export default Cards;
