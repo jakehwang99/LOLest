@@ -140,11 +140,21 @@ class BarChart extends React.Component {
         // Here, node passes a reference for D3 to use
         if(this.props.data != null) {
             let choices = []
+            let stats = []
             for(let d of this.props.data) {
                 if (!choices.includes(d.TEAM)) {
                     choices.push(d.TEAM)
                 } 
             }
+            /*
+            console.log(this.props.data)
+            for(let stat of this.props.data['0'].keys()) {
+                if(stat != "TEAM" && stat != "PLAYER") {
+                    stats.push(stat)
+                }
+            }
+            console.log(stats)
+            */
             return (
                 <div>
                     <svg ref={node => this.node = node}
