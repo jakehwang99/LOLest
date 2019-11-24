@@ -54,6 +54,7 @@ class DataPage extends React.Component {
       const leagueUrl = "http://localhost:5000/LCS_Summer_2019";
       this.getPlayers(playersUrl);
       this.getData(leagueUrl);
+      this.setState({ league: "LCS"});
     }
 
     onClickLEC = () => {
@@ -61,6 +62,7 @@ class DataPage extends React.Component {
       const leagueUrl = "http://localhost:5000/LEC_Summer_2019";
       this.getPlayers(playersUrl);
       this.getData(leagueUrl);
+      this.setState({ league: "LEC"});
     }
 
     onClickLCK = () => {
@@ -68,6 +70,7 @@ class DataPage extends React.Component {
       const leagueUrl = "http://localhost:5000/LCK_Summer_2019";
       this.getPlayers(playersUrl);
       this.getData(leagueUrl);
+      this.setState({ league: "LCK"});
     }
 
     onClickLPL = () => {
@@ -75,6 +78,7 @@ class DataPage extends React.Component {
       const leagueUrl = "http://localhost:5000/LPL_Summer_2019";
       this.getPlayers(playersUrl);
       this.getData(leagueUrl);
+      this.setState({ league: "LPL"});
     }
 
     formatPlayers = (data) => {
@@ -90,7 +94,7 @@ class DataPage extends React.Component {
     }
 
     render () {
-      const { sidebarOpen, options, leagueData } = this.state;
+      const { sidebarOpen, options, leagueData, league } = this.state;
       
       return (
         <div>
@@ -116,7 +120,7 @@ class DataPage extends React.Component {
             <MainHeader />
           </div>
 
-          <Body options={options} leagueData={leagueData} />
+          <Body options={options} leagueData={leagueData} league={league}/>
 
         </div>      
       );
