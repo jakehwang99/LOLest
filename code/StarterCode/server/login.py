@@ -1,5 +1,7 @@
 from flask import Flask, render_template, url_for, request, session, redirect
 import pymongo
+import ast
+import json as js
 import bcrypt as bcrypt
 
 app = Flask(__name__)
@@ -17,29 +19,39 @@ def index():
 
 @app.route('/login', methods=['POST'])
 def login():
+    strn = request.data
+    userpass = (ast.literal_eval(strn.decode('utf-8')))['params']
+    username = userpass['username']
+    password = userpass['password']
+    print(username + password)
     users = db.users
-    login_user = users.find_one({'name' : request.form['username']})
+    login_user = users.find_one({'name' : username})
     if login_user:
-        if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password']:
-            session['username'] = request.form['username']
+        if bcrypt.hashpw(password.encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password']:
+            session['username'] = username
             return 'You are logged in as ' + session['username']
-    return bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password'].encode('utf-8'))
+    return 'Failed'
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
+        strn = request.data
+        userpass = (ast.literal_eval(strn.decode('utf-8')))['params']
+        username = userpass['username']
+        password = userpass['password']
+        print(username + password)
         users = db.users
-        existing_user = users.find_one({'name' : request.form['username']})
+        existing_user = users.find_one({'name' : username})
 
         if existing_user is None:
-            hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
-            users.insert({'name' : request.form['username'], 'password' : hashpass})
-            session['username'] = request.form['username']
-            return redirect(url_for('index'))
+            hashpass = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            users.insert({'name' : username, 'password' : hashpass})
+            session['username'] = username
+            return 'Registration successful'
         
         return 'That username already exists!'
 
-    return render_template('register.html')
+    return 'Not sure how to get here lol'
 
 if __name__ == '__main__':
     app.secret_key = 'mysecret'
