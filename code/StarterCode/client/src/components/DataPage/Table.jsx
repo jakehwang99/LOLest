@@ -17,6 +17,7 @@ class Table extends React.Component {
         <div>
            <ReactTable
                 data={data}
+                filterable
                 columns={[
                     {
                         Header: "Team",
@@ -63,11 +64,11 @@ class Table extends React.Component {
                         accessor: "CSPM"  
                     },
                     {
-                        Header: "Gangsta",
+                        Header: "Gold",
                         accessor: "G"  
                     },
                     {
-                        Header: "Gangsta Per Minute",
+                        Header: "Gold Per Minute",
                         accessor: "GPM"  
                     },
                     {
