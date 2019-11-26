@@ -15,7 +15,7 @@ columns = ['Name', 'Country of Birth', 'Birthday', 'Residency', 'Team', 'Role', 
 df = pd.DataFrame(columns=columns)
 for league in leagues:
     df = pd.DataFrame(columns=columns)
-    url = 'https://lol.gamepedia.com/' + league + '/2019_Season/Spring_Season/Player_Statistics'
+    url = 'https://lol.gamepedia.com/' + league + '/2019_Season/Summer_Season/Player_Statistics'
     response = get(url)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     type(html_soup)
@@ -87,7 +87,7 @@ for league in leagues:
         if ' ' in player:
             playerName = (player.split(' '))
             player = playerName[0]
-            
+        player = player.lower()
         background = {'Name': [name], 'Country of Birth': [bCountry], 'Birthday': [birthday], 'Residency': [residence], 'Team': [team], 'Role': [role], 'IGN': [player], 'Image' : [playerimg]}
         dfRow = pd.DataFrame(background, columns = columns)
         df = pd.concat([df, dfRow], ignore_index=True)
