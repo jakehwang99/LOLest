@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import MainHeader from "../MainHeader.jsx";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Image, Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./layout.css";
 
 
@@ -19,16 +19,21 @@ class RegisterPage extends React.Component {
       this.handlePassChange = this.handlePassChange.bind(this);
       this.handleUserChange = this.handleUserChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.dismissError = this.dismissError.bind(this);
+    }
+
+    dismissError() {
+      this.setState({ error: '' });
     }
 
     handleSubmit(e) {
       e.preventDefault();
-      // if (!this.state.username) {
-      //   return this.setState({ error: 'Username is required' });
-      // }
-      // if (!this.state.password) {
-      //   return this.setState({ error: 'Password is required' });
-      // }
+      if (!this.state.username) {
+        this.setState({ error: 'Username is required' });
+      }
+      if (!this.state.password) {
+        this.setState({ error: 'Password is required' });
+      }
 
       console.log(this.state.username);
       console.log(this.state.password);
@@ -70,14 +75,26 @@ class RegisterPage extends React.Component {
     render () {
       return (
 
-        <div className="login-page">
-          <div className="form">
-            <form className="login-form" onSubmit={this.handleSubmit}>
-              <input type="text" data-test="username" placeholder="username" value={this.state.username} onChange={this.handleUserChange} />
-              <input type="password" data-test="password" placeholder="password" value={this.state.password} onChange={this.handlePassChange} />
-              <input className="buttonbutton" type="submit" value="Register" data-test="submit"/>
-              <p className="message">Already registered? <a href="/login">Sign In</a></p>
-            </form>
+        <div>
+          <div>
+            <MainHeader />
+          </div>
+          <div className="login-page">
+            <div className="form">
+              <form className="login-form" onSubmit={this.handleSubmit}>
+              {
+                this.state.error &&
+                <p data-test="error" onClick={this.dismissError}>
+                  <button onClick={this.dismissError}>✖</button>
+                  {this.state.error}
+                </p>
+              }
+                <input type="text" data-test="username" placeholder="username" value={this.state.username} onChange={this.handleUserChange} />
+                <input type="password" data-test="password" placeholder="password" value={this.state.password} onChange={this.handlePassChange} />
+                <input className="buttonbutton" type="submit" value="Register" data-test="submit"/>
+                <p className="message">Already registered? <a href="/login">Sign In</a></p>
+              </form>
+            </div>
           </div>
         </div>
         
