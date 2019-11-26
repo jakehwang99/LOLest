@@ -43,10 +43,10 @@ class RegisterPage extends React.Component {
 
         options.body = new FormData();
         options.body.append('username', this.state.username);
-        options.body.append('pass', this.state.password);
-        console.log(options.body.get('username'), options.body.get('pass'));
+        options.body.append('password', this.state.password);
+        console.log(options.body.get('username'), options.body.get('password'));
 
-        fetch('http://localhost:5000/register', options)
+        fetch('http://localhost:8080/register', options)
           .then(response => console.log(response))
           .catch(error => console.error(error))
     }

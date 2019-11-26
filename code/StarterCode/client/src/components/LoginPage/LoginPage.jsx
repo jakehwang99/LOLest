@@ -3,6 +3,9 @@ import MainHeader from "../MainHeader.jsx";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./layout.css";
 
+const axios = require('axios');
+
+
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
@@ -45,6 +48,30 @@ class LoginPage extends React.Component {
     }
 
     handleSend() {
+      // var url = '/login';
+      // var username = this.state.username;
+      // var password = this.state.password;
+      // let axiosConfig = {
+      //   headers: {
+      //       'Content-Type': 'application/json;charset=UTF-8',
+      //       "Access-Control-Allow-Origin": "*",
+      //   }
+      // };
+      // const body = { username, password };
+      
+      // axios.post('/login', body, axiosConfig)
+      //  .then(res => console.log(res))
+      //  .catch(err => console.log('Login: ', err));
+      
+      // axios.post(url, {
+      //   headers: {auth: username, password},
+      // }).then(function(response){
+      //   console.log(response);
+      // }).catch(function(error){
+      //   console.error(error);
+      // });
+
+
 
       let options = {
           headers: {
@@ -55,10 +82,10 @@ class LoginPage extends React.Component {
 
       options.body = new FormData();
       options.body.append('username', this.state.username);
-      options.body.append('pass', this.state.password);
-      console.log(options.body.get('username'), options.body.get('pass'));
+      options.body.append('password', this.state.password);
+      console.log(options.body.get('username'), options.body.get('password'));
 
-      fetch('http://localhost:5000/login', options)
+      fetch('http://localhost:8080/login', options)
         .then(response => console.log(response))
         .catch(error => console.error(error))
     }
