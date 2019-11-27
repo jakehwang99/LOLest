@@ -14,6 +14,7 @@ class RegisterPage extends React.Component {
           username: '',
           password: '',
           error: '',
+          response: ''
         };
 
       this.handlePassChange = this.handlePassChange.bind(this);
@@ -24,6 +25,15 @@ class RegisterPage extends React.Component {
 
     dismissError() {
       this.setState({ error: '' });
+    }
+
+    handleRegister() {
+      if (this.state.response != 'Registration successful') {
+        console.log(this.state.response);
+        this.setState({username: '', password:''});
+        console.log(this.state.username);
+        console.log(this.state.password);
+      }
     }
 
     handleSubmit(e) {
@@ -53,8 +63,10 @@ class RegisterPage extends React.Component {
           'content-type': 'application/json',
         }})
         .then(res => {
+          this.setState({response: res.data});
           console.log(res);
-          console.log(res.data);
+          console.log(this.state.response);
+          this.handleRegister();
       }).catch(function(error){
         console.error(error);
       });

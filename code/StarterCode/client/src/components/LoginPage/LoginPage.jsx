@@ -14,6 +14,7 @@ class LoginPage extends React.Component {
           username: '',
           password: '',
           error: '',
+          response: ''
         };
 
       this.handlePassChange = this.handlePassChange.bind(this);
@@ -24,6 +25,15 @@ class LoginPage extends React.Component {
 
     dismissError() {
       this.setState({ error: '' });
+    }
+
+    handleLogin() {
+      if (this.state.response == 'Failed') {
+        console.log(this.state.response);
+        this.setState({username: '', password:''});
+        console.log(this.state.username);
+        console.log(this.state.password);
+      }
     }
 
     handleSubmit(e) {
@@ -65,8 +75,10 @@ class LoginPage extends React.Component {
           'content-type': 'application/json',
         }})
         .then(res => {
+          this.setState({response: res.data});
           console.log(res);
-          console.log(res.data);
+          console.log(this.state.response);
+          this.handleLogin();
       }).catch(function(error){
         console.error(error);
       });
