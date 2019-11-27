@@ -24,19 +24,19 @@ class Visuals extends React.Component {
         };
     }
 
-    getData = (playerData, playerNum, column) => {
-      if (playerData[playerNum] == null) {
+    getData = (playerData, column) => {
+      if (playerData == null) {
         return 0;
       } else {
         switch (column){
           case "IGN":
-            return playerData[playerNum].PLAYER;
+            return playerData.PLAYER;
           case "Games":
-            return playerData[playerNum].GAMES;
+            return playerData.GAMES;
           case "Kills":
-            return playerData[playerNum].K;
+            return playerData.K;
           case "Gold":
-            return playerData[playerNum].G;
+            return playerData.G;
         }
       }
     }
@@ -55,30 +55,30 @@ class Visuals extends React.Component {
               <YAxis />
               <VerticalBarSeries
                 data={[
-                  {x: 'Games', y: this.getData(player1, 0, "Games")},
-                  {x: 'Kills', y: this.getData(player1, 0, "Kills")},
-                  {x: 'Gold', y: this.getData(player1, 0, "Gold")}
+                  {x: 'Games', y: this.getData(player1, "Games")},
+                  {x: 'Kills', y: this.getData(player1, "Kills")},
+                  {x: 'Gold', y: this.getData(player1, "Gold")}
                 ]}
                 animation
                 color="#D9514E"
                 onSeriesMouseOver={(event)=>{
                   // does something on mouse over
                   // you can access the value of the event
-                  console.log(this.getData(player1, 0, "IGN"))
+                  console.log(this.getData(player1, "IGN"))
                 }}
               />
               <VerticalBarSeries
                 data={[
-                  {x: 'Games', y: this.getData(player2, 0, "Games")},
-                  {x: 'Kills', y: this.getData(player2, 0, "Kills")},
-                  {x: 'Gold', y: this.getData(player2, 0, "Gold")}
+                  {x: 'Games', y: this.getData(player2, "Games")},
+                  {x: 'Kills', y: this.getData(player2, "Kills")},
+                  {x: 'Gold', y: this.getData(player2, "Gold")}
                 ]}
                 animation
                 color="#2DA8D8"
                 onSeriesMouseOver={(event)=>{
                   // does something on mouse over
                   // you can access the value of the event
-                  console.log(this.getData(player2, 0, "IGN"))
+                  console.log(this.getData(player2, "IGN"))
                 }}
               />
             </XYPlot>

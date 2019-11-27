@@ -7,7 +7,8 @@ import Visuals from './Visuals.jsx';
 import './comparepagelayout.css';
 
 //import Button from "react-bootstrap";
-import { Image, Button } from "react-bootstrap";
+//import { Image, Button } from "react-bootstrap";
+import { ButtonToolbar, Dropdown, DropdownButton, Button } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -17,8 +18,10 @@ class ComparePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            playerD1: [null],
-            playerD2: [null]
+            leagueLeft: [],
+            leagueRight: [],
+            playerLeft: null,
+            playerRight: null
         };
     }
 
@@ -27,11 +30,11 @@ class ComparePage extends React.Component {
           .then((response) => {
             // handle success
             if (isLeft) {
-              this.setState({ playerD1: response.data.data });
+              this.setState({ leagueLeft: response.data.data });
             } else {
-              this.setState({ playerD2: response.data.data });
+              this.setState({ leagueRight: response.data.data });
             }
-            console.log(response.data.data);
+            //console.log(response.data.data);
         })
           .catch(function (error) {
             // handle error
@@ -39,51 +42,56 @@ class ComparePage extends React.Component {
         })
     }
 
-    onClickPlayer1 = () => {
-      //const playersUrl = "http://localhost:5000/LCS_Summer_2019/players";
-      const leagueUrl = "http://localhost:5000/LCS_Summer_2019";
-      //this.getPlayers(playersUrl);
-      this.getData(leagueUrl, true);
-      //this.setState({ player1: "playerup"});
+    onClickLeague = (league, isLeft) => {
+      const leagueUrl = "http://localhost:5000/" + league + "_Summer_2019";
+      this.getData(leagueUrl, isLeft);
     }
 
-    onClickPlayer2 = () => {
-      //const playersUrl = "http://localhost:5000/LEC_Summer_2019/players";
-      const leagueUrl = "http://localhost:5000/LEC_Summer_2019";
-      //this.getPlayers(playersUrl);
-      this.getData(leagueUrl, false);
-      //this.setState({ player2: "playerup"});
-    }
-
-    testdata = (d) => {
-      if (d[0] == null) {
-        console.log("No data");
+    onClickPlayer = (player, isLeft) => {
+      if (isLeft) {
+        this.setState({ playerLeft: player });
       } else {
-        //console.log(d[0].Name)
-        console.log(d[0].PLAYER);
+        this.setState({ playerRight: player });
       }
-
     }
 
     render() {
-      const {playerD1, playerD2} = this.state;
-      this.testdata(playerD1);
-      this.testdata(playerD2);
+      const {leagueLeft, leagueRight, playerLeft, playerRight} = this.state;
+
       return (
         <div>
           <MainHeader />
           
           <div>
-            <Button variant="dark" onClick={this.onClickPlayer1}> player1 </Button>
-            <Button variant="dark" onClick={this.onClickPlayer2}> player2 </Button>
+            <ButtonToolbar>
+              <DropdownButton title="Choose a league">
+                {["LCS", "LEC", "LCK", "LPL"].map(league => (
+                  <Dropdown.Item onClick={() => this.onClickLeague(league, true)}> {league} </Dropdown.Item>
+                ))}
+              </DropdownButton>
+              <DropdownButton title="Choose a player" size="sm">
+                {leagueLeft.map(player => (
+                  <Dropdown.Item onClick={() => this.onClickPlayer(player, true)}> {player.PLAYER} </Dropdown.Item>
+                ))}
+              </DropdownButton>
+              <DropdownButton title="Choose a league">
+                {["LCS", "LEC", "LCK", "LPL"].map(league => (
+                  <Dropdown.Item onClick={() => this.onClickLeague(league, false)}> {league} </Dropdown.Item>
+                ))}
+              </DropdownButton>
+              <DropdownButton title="Choose a player" size="sm">
+                {leagueLeft.map(player => (
+                  <Dropdown.Item onClick={() => this.onClickPlayer(player, false)}> {player.PLAYER} </Dropdown.Item>
+                ))}
+              </DropdownButton>
+            </ButtonToolbar>
           </div>
 
           <div>
-            <Visuals player1={playerD1} player2={playerD2} />
+            <Visuals player1={playerLeft} player2={playerRight} />
           </div>
-          
         </div>
-        
+
       );
     }
 }
