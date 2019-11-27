@@ -64,23 +64,23 @@ class ComparePage extends React.Component {
           
           <div>
             <ButtonToolbar>
-              <DropdownButton title="Choose a league">
+              <DropdownButton variant="danger" title="Choose a league">
                 {["LCS", "LEC", "LCK", "LPL"].map(league => (
                   <Dropdown.Item onClick={() => this.onClickLeague(league, true)}> {league} </Dropdown.Item>
                 ))}
               </DropdownButton>
-              <DropdownButton title="Choose a player" size="sm">
+              <DropdownButton variant="danger" title="Choose a player" size="sm">
                 {leagueLeft.map(player => (
                   <Dropdown.Item onClick={() => this.onClickPlayer(player, true)}> {player.PLAYER} </Dropdown.Item>
                 ))}
               </DropdownButton>
-              <DropdownButton title="Choose a league">
+              <DropdownButton variant="primary" title="Choose a league">
                 {["LCS", "LEC", "LCK", "LPL"].map(league => (
                   <Dropdown.Item onClick={() => this.onClickLeague(league, false)}> {league} </Dropdown.Item>
                 ))}
               </DropdownButton>
-              <DropdownButton title="Choose a player" size="sm">
-                {leagueLeft.map(player => (
+              <DropdownButton variant="primary" title="Choose a player" size="sm">
+                {leagueRight.map(player => (
                   <Dropdown.Item onClick={() => this.onClickPlayer(player, false)}> {player.PLAYER} </Dropdown.Item>
                 ))}
               </DropdownButton>

@@ -11,7 +11,8 @@ import {
   YAxis,
   VerticalGridLines,
   HorizontalGridLines,
-  VerticalBarSeries
+  VerticalBarSeries,
+  RadialChart
 } from 'react-vis';
 
 const axios = require('axios');
@@ -35,6 +36,8 @@ class Visuals extends React.Component {
             return playerData.GAMES;
           case "Kills":
             return playerData.K;
+          case "Deaths":
+            return playerData.D;
           case "Gold":
             return playerData.G;
         }
@@ -48,38 +51,39 @@ class Visuals extends React.Component {
         <div>
           <div style={{margin: "10px" }}>
 
-            <XYPlot margin={{bottom: 70}} xType="ordinal" yDomain={[0,25]} width={400} height={400}>
+
+            <RadialChart
+              data={[
+                {angle: this.getData(player2, "Games"), label: this.getData(player2, "IGN"), color: "#2DA8D8"},
+                {angle: this.getData(player1, "Games"), label: this.getData(player1, "IGN"), color: "#D9514E"}
+              ]}
+              width={300}
+              height={300}
+              colorType="literal"
+              showLabels={true}
+              animation />
+
+
+            <XYPlot margin={{bottom: 70}} xType="ordinal" yDomain={[0,10]} width={400} height={400}>
               <VerticalGridLines />
               <HorizontalGridLines />
               <XAxis tickLabelAngle={-45} />
               <YAxis />
               <VerticalBarSeries
                 data={[
-                  {x: 'Games', y: this.getData(player1, "Games")},
                   {x: 'Kills', y: this.getData(player1, "Kills")},
-                  {x: 'Gold', y: this.getData(player1, "Gold")}
+                  {x: 'Deaths', y: this.getData(player1, "Deaths")}
                 ]}
                 animation
                 color="#D9514E"
-                onSeriesMouseOver={(event)=>{
-                  // does something on mouse over
-                  // you can access the value of the event
-                  console.log(this.getData(player1, "IGN"))
-                }}
               />
               <VerticalBarSeries
                 data={[
-                  {x: 'Games', y: this.getData(player2, "Games")},
                   {x: 'Kills', y: this.getData(player2, "Kills")},
-                  {x: 'Gold', y: this.getData(player2, "Gold")}
+                  {x: 'Deaths', y: this.getData(player2, "Deaths")}
                 ]}
                 animation
                 color="#2DA8D8"
-                onSeriesMouseOver={(event)=>{
-                  // does something on mouse over
-                  // you can access the value of the event
-                  console.log(this.getData(player2, "IGN"))
-                }}
               />
             </XYPlot>
           </div>
