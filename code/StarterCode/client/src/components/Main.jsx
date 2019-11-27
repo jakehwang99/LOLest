@@ -20,11 +20,7 @@ class Main extends React.Component {
           <ButtonToolbar className="buttons">
             <div>
               <Button style={{ width: '8rem' }} variant="dark" href="http://localhost:8080/stream">Stream</Button>
-              {'              '}
-
-              // {'              '}
-              // <Button variant="danger" href="http://localhost:8080/compare">Compare</Button>
-
+              <Button style={{ width: '8rem' }} variant="dark" href="http://localhost:8080/compare">Compare</Button>
               <Button style={{ width: '8rem' }} variant="dark" href="http://localhost:8080/data">Data</Button>
 
             </div>
