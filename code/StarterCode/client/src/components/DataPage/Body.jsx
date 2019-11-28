@@ -14,11 +14,18 @@ const axios = require('axios');
 class Body extends React.Component {
     constructor(props) {
         super(props);
+        this.onHover = this.onHover.bind(this)
         this.state = {
             activeTab: 0,
             selectedOption: null,
             disablePlayerInfoTab: true,
+            hover: "none",
         };
+    }
+
+    // Used for hover functionality with D3 - will set the hover element to the correct PLAYER when hovered
+    onHover(d) {
+        this.setState({hover: d.PLAYER})
     }
 
     handleChange = selectedOption => {
@@ -61,7 +68,7 @@ class Body extends React.Component {
               </TabList>
               <TabPanel><Table data={leagueData} /></TabPanel>
               <TabPanel><ParallelCoords size={[1200, 760]} data={leagueData} /></TabPanel>
-              <TabPanel><BarChart size={[1200,760]} data={leagueData} /></TabPanel>
+              <TabPanel><BarChart hoverElement={this.state.hover} onHover={this.onHover} size={[1200,760]} data={leagueData} /></TabPanel>
               <TabPanel>
                   { playerPage && <Cards playerPage={playerPage} /> }
               </TabPanel>

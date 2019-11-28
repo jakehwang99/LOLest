@@ -35,7 +35,7 @@ class BarChart extends React.Component {
     }
 
     createBarChart() {
-        console.log(this.props.data)
+        //console.log(this.props.data)
 
         // Can't create chart if data has not been selected yet
         if(this.props.data == null) {
@@ -43,6 +43,7 @@ class BarChart extends React.Component {
         } 
         const node = this.node // the svg element itself
 
+        // Set the margins and size of graph
         let mtop = 30, mright = 30, mbot = 100, mleft = 60
         let width = this.props.size[0] - mleft - mright;
         let height = this.props.size[1] - mtop - mbot
@@ -93,11 +94,11 @@ class BarChart extends React.Component {
         // Create the bar chart
         svg.append("g")
             .attr("class", "chartHolder")
-            .attr("transform", "translate(0,0)")
             .selectAll("rect")
             .data(selection)
             .enter()
             .append("rect")
+                .attr("class", "bar")
 
         svg.select("g.chartHolder")
             .selectAll("rect")
@@ -106,28 +107,13 @@ class BarChart extends React.Component {
             .remove()
 
         svg.select("g.chartHolder")
-            .selectAll("rect")
+            .selectAll("rect.bar")
                 .attr("x", d => {return xScale(d.PLAYER)})
                 .attr("y", d => {return yScale(d.CS)})
                 .attr("width", xScale.bandwidth())
                 .attr("height", d => {return height - yScale(d.CS)})
-                .attr("fill", d => { return colors[d.TEAM]})
-                .on("mouseover", d => {
-                    svg.select("g.chartHolder").selectAll("rect.tooltip")
-                        .remove()
-                    svg.select("g.chartHolder").append("rect")
-                        .attr("className", "tooltip")
-                        .attr("x", xScale(d.PLAYER))
-                        .attr("y", yScale(d.CS))
-                        .attr("width", xScale.bandwidth())
-                        .attr("height", "50px")
-                        .attr("fill", "#000000")
-                })
-                .on("mouseout", d => {
-                    svg.select("g.chartHolder").selectAll(".tooltip")
-                        .remove()
-                })
-
+                .attr("fill", d => { return this.props.hoverElement == d.PLAYER ? "#000000" : colors[d.TEAM]})
+                .on("mouseenter", this.props.onHover)
 
     }
 
@@ -146,15 +132,12 @@ class BarChart extends React.Component {
                     choices.push(d.TEAM)
                 } 
             }
-            /*
-            console.log(this.props.data)
-            for(let stat of this.props.data['0'].keys()) {
-                if(stat != "TEAM" && stat != "PLAYER") {
+            for(let stat of Object.keys(this.props.data[0])) {
+                if(stat != "TEAM" && stat != "PLAYER" && stat != "Champs") {
                     stats.push(stat)
                 }
             }
-            console.log(stats)
-            */
+
             return (
                 <div>
                     <svg ref={node => this.node = node}
@@ -162,8 +145,8 @@ class BarChart extends React.Component {
                     </svg>
                     <p>Select team:</p>
                     <RadioButtonGroup selections={choices} default="Cloud9" handleClick={this.handleClick.bind(this)} />
-                    <p>Select role:</p>
-                    <RadioButtonGroup selections={choices} default="ADC" handleClick={this.handleClick.bind(this)} />
+                    <p>Select statistic to display:</p>
+                    <RadioButtonGroup selections={stats} default="CS" handleClick={this.handleClick.bind(this)} />
                 </div>
             )
         }
