@@ -9,7 +9,7 @@ class RadioButtonGroup extends React.Component {
     render() {
         return (
         <div> 
-            <ToggleButtonGroup type="checkbox" name="selections" defaultValue={this.props.default} onChange={(e)=>this.props.handleClick(e)}>
+            <ToggleButtonGroup type={this.props.type} name="selections" defaultValue={this.props.default} onChange={(e)=>this.props.handleClick(e)}>
                 { this.props.selections.map((d, i) => { return <ToggleButton key={i} value={d}>{d}</ToggleButton> } ) } 
             </ToggleButtonGroup>
         </div>)

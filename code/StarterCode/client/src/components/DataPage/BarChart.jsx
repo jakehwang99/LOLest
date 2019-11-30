@@ -62,11 +62,12 @@ let colors = {
 class BarChart extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {teams: [], currLeague: "", choices: [], stats: []};
+        this.state = {teams: [], stat:"CS", currLeague: "", choices: [], stats: []};
         // Bind component as context to any new internal functions
         // (Doesn't need to be done for existing lifecycle functions)
         this.createBarChart = this.createBarChart.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+        this.handleTeamClick = this.handleTeamClick.bind(this);
+        this.handleStatClick = this.handleStatClick.bind(this);
     }
 
     // Fire bar chart function whenever component first mounts
@@ -147,9 +148,10 @@ class BarChart extends React.Component {
                 .style("font-size", Math.min(Math.floor(xScale.bandwidth()/3.5), 20) + "px");
 
         let yScale = d3.scaleLinear()
-            .domain([0, 400])
-            .range([height, 0]);
-
+            .domain([0, d3.max(this.props.data.map(d => parseInt(d[this.state.stat])))])
+            .range([height, 0])
+            .nice();
+    
         svg.append("g")
             .attr("transform", "translate(0,0)")
             .call(d3.axisLeft(yScale))
@@ -175,16 +177,20 @@ class BarChart extends React.Component {
         // Color the bars according to team, and add hover functionality for a tooltip
         svg.select("g.chartHolder")
             .selectAll("rect.bar")
-                .attr("x", d => {return xScale(d.PLAYER)})
-                .attr("y", d => {return yScale(d.CS)})
+                .attr("x", d => {return xScale(d["PLAYER"])})
+                .attr("y", d => {return yScale(d[this.state.stat])})
                 .attr("width", xScale.bandwidth())
-                .attr("height", d => {return height - yScale(d.CS)})
+                .attr("height", d => {return height - yScale(d[this.state.stat])})
                 .attr("fill", d => { return this.props.hoverElement == d.PLAYER ? "#000000" : colors[this.props.league][d.TEAM]})
                 .on("mouseenter", this.props.onHover);
     }
 
-    handleClick(e) {
+    handleTeamClick(e) {
         this.setState({teams: e});
+    }
+
+    handleStatClick(e) {
+        this.setState({stat: e});
     }
 
     render() {
@@ -197,9 +203,9 @@ class BarChart extends React.Component {
                         width={this.props.size[0]} height={this.props.size[1]}>
                     </svg>
                     <p>Select team:</p>
-                    <RadioButtonGroup selections={this.state.choices} default={this.state.choices[0]} handleClick={this.handleClick.bind(this)} />
-                    <p>Select statistic to display:</p>
-                    <RadioButtonGroup selections={this.state.stats} default="CS" handleClick={this.handleClick.bind(this)} />
+                    <RadioButtonGroup type="checkbox" selections={this.state.choices} default={this.state.choices[0]} handleClick={this.handleTeamClick} />
+                    <p>Select stat:</p>
+                    <RadioButtonGroup type="radio" selections={this.state.stats} default="CS" handleClick={this.handleStatClick} />
                 </div>
             );
         }
