@@ -25,6 +25,7 @@ class Body extends React.Component {
 
     // Used for hover functionality with D3 - will set the hover element to the correct PLAYER when hovered
     onHover(d) {
+        console.log(d.PLAYER)
         this.setState({hover: d.PLAYER})
     }
 
@@ -68,7 +69,7 @@ class Body extends React.Component {
               </TabList>
               <TabPanel><Table data={leagueData} /></TabPanel>
               <TabPanel><ParallelCoords size={[1200, 760]} data={leagueData} /></TabPanel>
-              <TabPanel><BarChart hoverElement={this.state.hover} onHover={this.onHover} size={[1200,760]} data={leagueData} /></TabPanel>
+              <TabPanel><BarChart hoverElement={this.state.hover} onHover={this.onHover} size={[800,560]} data={leagueData} /></TabPanel>
               <TabPanel>
                   { playerPage && <Cards playerPage={playerPage} /> }
               </TabPanel>

@@ -90,6 +90,14 @@ class DataPage extends React.Component {
     } 
 
     onSetSidebarOpen = (open) => {
+      if(open == false) {
+        d3.select(".nopointers")
+          .style("pointer-events", "none");
+      }
+      else {
+        d3.select(".nopointers")
+          .style("pointer-events", "all");
+      }
       this.setState({ sidebarOpen: open });
     }
 
@@ -98,6 +106,7 @@ class DataPage extends React.Component {
       
       return (
         <div>
+          <div className="nopointers">
           <Sidebar
             sidebarClassName="sidebar"
             sidebar={
@@ -116,6 +125,7 @@ class DataPage extends React.Component {
               <Image src={SidebarIcon}/>
             </Button>
           </Sidebar>
+          </div>
           <div>
             <MainHeader />
           </div>

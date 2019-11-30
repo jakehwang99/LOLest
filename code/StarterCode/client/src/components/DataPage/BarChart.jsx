@@ -66,6 +66,7 @@ class BarChart extends React.Component {
         // Use a g element rather than the svg directly to account for margins
         let svg = d3.select(node).append("g")
             .attr("transform", "translate(" + mleft + "," + mtop + ")")
+            .attr("class", "g_main")
 
         // Create the scales for x and y axis
         let xScale = d3.scaleBand()
@@ -93,8 +94,9 @@ class BarChart extends React.Component {
 
         // Create the bar chart
         svg.append("g")
+            .style("height", height)
             .attr("class", "chartHolder")
-            .selectAll("rect")
+            .selectAll("rect.bar")
             .data(selection)
             .enter()
             .append("rect")
