@@ -1,6 +1,7 @@
 import React from 'react'
 import RadioButtonGroup from './RadioButtonGroup.jsx'
 
+// TODO: Automate this from the data? How to get right colors?
 let colors = {
     "LCS": {
         "100 Thieves": "#8b0000",
@@ -14,12 +15,54 @@ let colors = {
         "Team Liquid": "#003366",
         "Team SoloMid": "#999999"
     },
+    "LEC": {
+        "Excel Esports": "#8b0000",
+        "FC Schalke 04 Esports": "#87ceeb",
+        "Fnatic": "#ff6961",
+        "G2 Esports": "#0277bd",
+        "Misfits Gaming": "#ffa500",
+        "Origen": "#018920",
+        "Rogue (European Team)": "#fcc201",
+        "SK Gaming": "#95f985",
+        "Splyce": "#003366",
+        "Team Vitality": "#999999"
+    },
+    "LCK": {
+        "Afreeca Freecs": "#8b0000",
+        "DAMWON Gaming": "#87ceeb",
+        "Gen.G": "#ff6961",
+        "Griffin": "#0277bd",
+        "Hanwha Life Esports": "#ffa500",
+        "Jin Air Green Wings": "#018920",
+        "Kingzone DragonX": "#fcc201",
+        "KT Rolster": "#95f985",
+        "SANDBOX Gaming": "#003366",
+        "SK Telecom T1": "#999999"
+    },
+    "LPL": {
+        "Bilibili Gaming": "#8b0000",
+        "Dominus Esports": "#87ceeb",
+        "EDward Gaming": "#ff6961",
+        "FunPlus Phoenix": "#0277bd",
+        "Invictus Gaming": "#ffa500",
+        "JD Gaming": "#018920",
+        "LGD Gaming": "#fcc201",
+        "LNG Esports": "#95f985",
+        "Oh My God": "#003366",
+        "Rogue Warriors": "#999999",
+        "Royal Never Give Up": "#ffa500",
+        "Suning": "#018920",
+        "Team WE": "#fcc201",
+        "Top Esports": "#95f985",
+        "Vici Gaming": "#003366",
+        "Victory Five": "#999999"
+    }
 };
 
 class BarChart extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {teams: [], initialize: true};
+        this.state = {teams: [], currLeague: "", choices: [], stats: []};
         // Bind component as context to any new internal functions
         // (Doesn't need to be done for existing lifecycle functions)
         this.createBarChart = this.createBarChart.bind(this);
@@ -34,9 +77,21 @@ class BarChart extends React.Component {
     // or whenever component receives new props/state
     componentDidUpdate() {
         // Initialize the chart with the first team, but after that allow users to clear the chart
-        if(this.state.initialize && this.state.teams.length == 0) {
-            if(this.props.league) {
-                this.setState({teams: [Object.keys(colors[this.props.league])[0]], initialize: false});
+        if(this.props.league && this.props.data) {
+            // On league change, we need to update the team and stat lists.
+            if(this.state.currLeague != this.props.league) {
+                let choices = [];
+                let stats = [];
+                for(let d of Object.keys(colors[this.props.league])) {
+                    choices.push(d);
+                }
+                for(let stat of Object.keys(this.props.data[0])) {
+                    if(stat != "TEAM" && stat != "PLAYER" && stat != "Champs") {
+                        stats.push(stat);
+                    }
+                }
+
+                this.setState({currLeague: this.props.league, choices: choices, stats: stats});
             }
         }
         this.createBarChart();
@@ -89,7 +144,7 @@ class BarChart extends React.Component {
             .selectAll("text")
                 .attr("transform", "translate(0,0)rotate(-45)")
                 .attr("text-anchor", "end")
-                .style("font-size", Math.floor(xScale.bandwidth()/3.5) + "px");
+                .style("font-size", Math.min(Math.floor(xScale.bandwidth()/3.5), 20) + "px");
 
         let yScale = d3.scaleLinear()
             .domain([0, 400])
@@ -134,28 +189,17 @@ class BarChart extends React.Component {
 
     render() {
         // Render returns an SVG element waiting for our D3 code
-        // Here, node passes a reference for D3 to use
         if(this.props.data) {
-            let choices = [];
-            let stats = [];
-            for(let d of Object.keys(colors[this.props.league])) {
-                choices.push(d);
-            }
-            for(let stat of Object.keys(this.props.data[0])) {
-                if(stat != "TEAM" && stat != "PLAYER" && stat != "Champs") {
-                    stats.push(stat);
-                }
-            }
-
+            // Here, node passes a reference for D3 to use
             return (
                 <div>
                     <svg ref={node => this.node = node}
                         width={this.props.size[0]} height={this.props.size[1]}>
                     </svg>
                     <p>Select team:</p>
-                    <RadioButtonGroup selections={choices} default={Object.keys(colors[this.props.league])[0]} handleClick={this.handleClick.bind(this)} />
+                    <RadioButtonGroup selections={this.state.choices} default={this.state.choices[0]} handleClick={this.handleClick.bind(this)} />
                     <p>Select statistic to display:</p>
-                    <RadioButtonGroup selections={stats} default="CS" handleClick={this.handleClick.bind(this)} />
+                    <RadioButtonGroup selections={this.state.stats} default="CS" handleClick={this.handleClick.bind(this)} />
                 </div>
             );
         }
