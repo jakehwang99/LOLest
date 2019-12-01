@@ -11,10 +11,11 @@ db = client['LOLplayers']
 
 
 leagues = ['LCS', 'LCK', 'LEC', 'LPL']
-columns = ['Name', 'Country of Birth', 'Birthday', 'Residency', 'Team', 'Role']
+columns = ['Name', 'Country of Birth', 'Birthday', 'Residency', 'Team', 'Role', 'IGN', "Image"]
 df = pd.DataFrame(columns=columns)
 for league in leagues:
-    url = 'https://lol.gamepedia.com/' + league + '/2019_Season/Spring_Season/Player_Statistics'
+    df = pd.DataFrame(columns=columns)
+    url = 'https://lol.gamepedia.com/' + league + '/2019_Season/Summer_Season/Player_Statistics'
     response = get(url)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     type(html_soup)
@@ -31,7 +32,11 @@ for league in leagues:
             except KeyError:
                 continue
 
+    #print(players)
+
     for player in players:
+        print("looking for data on {0}.".format(player))
+
         url = 'https://lol.gamepedia.com/' + player
         response = get(url)
         html_soup = BeautifulSoup(response.text, 'html.parser')
@@ -63,10 +68,34 @@ for league in leagues:
                     team = teamname.text
                 elif(td[0].text == 'Role'):
                     role = td[1].text
-        background = {'Name': [name], 'Country of Birth': [bCountry], 'Birthday': [birthday], 'Residency': [residence], 'Team': [team], 'Role': [role]}
+
+        playerimg = None
+        playerind = 1
+
+        #retired = ["Proud", "Sangyoon", "PawN", "Score", "Vizicsacsi"]
+
+        #if player in retired:
+        if tr[0].text == "Player has retired.":
+            playerind = 2
+
+        try:
+            playerimg = tr[playerind].find('img')['src']
+            print(playerimg)
+        except KeyError:
+            continue
+
+        if ' ' in player:
+            playerName = (player.split(' '))
+            player = playerName[0]
+        player = player.lower()
+        background = {'Name': [name], 'Country of Birth': [bCountry], 'Birthday': [birthday], 'Residency': [residence], 'Team': [team], 'Role': [role], 'IGN': [player], 'Image' : [playerimg]}
         dfRow = pd.DataFrame(background, columns = columns)
         df = pd.concat([df, dfRow], ignore_index=True)
-    
+
+    #print(df)
+
+    print("adding {0}...\n".format(league))
+    db.drop_collection(league)
     collection = db[league]
     data = json.loads(df.T.to_json()).values()
     collection.insert_many(data)

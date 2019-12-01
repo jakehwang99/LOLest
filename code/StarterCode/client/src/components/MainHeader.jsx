@@ -1,6 +1,5 @@
 import React from "react";
 import { Navbar, Button } from "react-bootstrap";
-import { Redirect } from 'react-router-dom';
 import logo from '../images/logo3.png';
 import './MainHeader.css';
 
@@ -23,6 +22,11 @@ class MainHeader extends React.Component {
                   height="50"
                   alt="lolest logo"
                 />
+              </Button>
+            </Navbar.Brand>
+             <Navbar.Brand href="http://localhost:8080/login" className="loginButton">
+              <Button variant="light">
+                Login
               </Button>
             </Navbar.Brand>
           </Navbar>

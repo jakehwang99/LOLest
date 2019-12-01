@@ -52,11 +52,12 @@ class Body extends React.Component {
     handleChange = selectedOption => {
       this.setState({ selectedOption });
 
-      const player_name = selectedOption.value;
+      const player_name = selectedOption.value.toLowerCase();
+
       const league = this.props.league;
       const player_url = `http://localhost:5000/${league}/${player_name}/page`;
 
-      this.setState({ disablePlayerInfoTab: false });
+      this.setState({ disablePlayerInfoTab: false, player_name: selectedOption.value });
 
       axios.get(player_url)
           .then((response) => {
@@ -69,7 +70,7 @@ class Body extends React.Component {
     };
 
     render () {
-      const { activeTab, selectedOption, playerPage, disablePlayerInfoTab } = this.state;
+      const { activeTab, selectedOption, playerPage, disablePlayerInfoTab, player_name } = this.state;
       const { options, leagueData } = this.props;   
       
       return (
@@ -105,7 +106,7 @@ class Body extends React.Component {
                         />
               </TabPanel>
               <TabPanel>
-                  { playerPage && <Cards playerPage={playerPage} /> }
+                  { playerPage && player_name && <Cards playerPage={playerPage} playerName={player_name} /> }
               </TabPanel>
             </Tabs>
             </div>
