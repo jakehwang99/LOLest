@@ -73,7 +73,12 @@ class Body extends React.Component {
                   <Tab disabled={disablePlayerInfoTab}> Player Info </Tab>
               </TabList>
               <TabPanel><Table data={leagueData} /></TabPanel>
-              <TabPanel><ParallelCoords size={[1200, 760]} data={leagueData} /></TabPanel>
+              <TabPanel><ParallelCoords 
+                            size={[1200, 760]} 
+                            data={leagueData} 
+                            league={this.props.league}
+                        />
+              </TabPanel>
               <TabPanel><BarChart 
                             hoverElement={this.state.hover} 
                             onHover={this.onHover} 

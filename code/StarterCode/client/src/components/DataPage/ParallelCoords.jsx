@@ -65,9 +65,11 @@ class ParallelCoords extends React.Component {
             .attr("transform", "translate(" + mleft + "," + mtop + ")")
 
         // Extract the list of dimensions we want to keep in the plot
-        let dimensions = d3.keys(selection).filter(function(d) {
+        let dimensions = d3.keys(this.props.data[0]).filter(function(d) {
             return d != "PLAYER" && d != "TEAM" && d != "Champs"
+                && d != "WR" && d != "KPAR" && d != "KS" && d != "GS";
         })
+        console.log(this.props.data[0])
         console.log(dimensions)
 
         // For each dimension, construct a linear scale
@@ -75,7 +77,7 @@ class ParallelCoords extends React.Component {
         for(let i in dimensions) {
             let name = dimensions[i]
             y[name] = d3.scaleLinear()
-                .domain(d3.extent(selection, d => {return +d[name]}))
+                .domain(d3.extent(this.props.data, d => {return +d[name]}))
                 .range([height, 0])
         }
 
@@ -85,23 +87,23 @@ class ParallelCoords extends React.Component {
             .padding(1)
             .domain(dimensions)
 
+            
         function path(d) {
             return d3.line()(dimensions.map(
                 function(p) { return [x(p), y[p](d[p])]; }
             ))
         }
 
-        /*
+        
         // draw the lines
         svg.selectAll("myPath")
             .data(this.props.data)
             .enter().append("path")
             .attr("d", path)
             .style("fill", "none")
-            .style("stroke", "#69b3a2")
+            .style("stroke", d => colors[d.TEAM])
             .style('opacity", 0.5')
-            */
-
+            
         svg.selectAll("myAxis")
             .data(dimensions).enter()
             .append("g")
@@ -114,6 +116,7 @@ class ParallelCoords extends React.Component {
                 .attr("y", -9)
                 .text(function(d) { return d; })
                 .style("fill", "black")
+                
 
     }
 
