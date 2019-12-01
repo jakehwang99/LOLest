@@ -60,6 +60,7 @@ class ParallelCoords extends React.Component {
         // Remove all elements from previous graphs
         // TODO: make this a transition instead
         d3.select(node).selectAll("g").remove()
+        d3.select(node).selectAll("path").remove()
 
         // Use a g element rather than the svg directly to account for margins
         let svg = d3.select(node).append("g")
@@ -101,7 +102,7 @@ class ParallelCoords extends React.Component {
             .style("stroke", "#cccccc")
             .style('opacity", 0.5')
             
-        if(this.props.filteredData != null) {
+        if(this.props.filteredData != null && this.props.filteredData != {}) {
             svg.selectAll("myPath")
                 .data(this.props.filteredData)
                 .enter().append("path")

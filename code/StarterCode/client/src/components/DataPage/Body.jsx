@@ -32,21 +32,22 @@ class Body extends React.Component {
     }
 
     onBrush(filter) {
-        //const filters = Object.assign({}, this.state.filters, filter);
-        let filters = filter;
         let li = [];
-        for(let key in filters) {
-            li.push([key, filters[key]])
+        for(let key in filter) {
+            li.push([key, filter[key]])
         }
-        const filtered = this.props.leagueData.filter(d =>
+        let filtered = this.props.leagueData.filter(d =>
             li.every((b) => {
                 let attr = b[0]
                 let bounds = b[1]
                 return !bounds || bounds[0] > d[attr] && d[attr] > bounds[1]
             })
         )
+        if(filtered.length == 0) {
+            filtered = null;
+        }
+        this.setState({filtered})
 
-        this.setState({filters, filtered});
     }
 
     handleChange = selectedOption => {
