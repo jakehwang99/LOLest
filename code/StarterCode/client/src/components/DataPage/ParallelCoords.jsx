@@ -136,7 +136,7 @@ class ParallelCoords extends React.Component {
             .each(function(d) {
                 d3.select(this)
                     .call(y[d].brush = d3.brushY()
-                        .extent([[-8, -1],[8, height+1]])
+                        .extent([[-16, -3],[16, height+3]])
                         .on("end", function() {
                             thisHolder.brushEnd(y, d);
                         })
