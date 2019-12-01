@@ -3,12 +3,7 @@ import React from "react";
 import MainHeader from "../MainHeader.jsx";
 import Visuals from './Visuals.jsx';
 
-
-import './comparepagelayout.css';
-
-//import Button from "react-bootstrap";
-//import { Image, Button } from "react-bootstrap";
-import { ButtonToolbar, Dropdown, DropdownButton, Button } from "react-bootstrap";
+import { Container, Row, Col, ButtonToolbar, Dropdown, DropdownButton } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -55,43 +50,68 @@ class ComparePage extends React.Component {
       }
     }
 
+    getPlayerName = (player) => {
+      if (player == null) {
+        return "(Pick a player)";
+      } else {
+        return player.PLAYER;
+      }
+    }
+
     render() {
       const {leagueLeft, leagueRight, playerLeft, playerRight} = this.state;
 
       return (
         <div>
-          <MainHeader />
-          
           <div>
-            <ButtonToolbar>
-              <DropdownButton variant="danger" title="Choose a league">
-                {["LCS", "LEC", "LCK", "LPL"].map(league => (
-                  <Dropdown.Item onClick={() => this.onClickLeague(league, true)}> {league} </Dropdown.Item>
-                ))}
-              </DropdownButton>
-              <DropdownButton variant="danger" title="Choose a player" size="sm">
-                {leagueLeft.map(player => (
-                  <Dropdown.Item onClick={() => this.onClickPlayer(player, true)}> {player.PLAYER} </Dropdown.Item>
-                ))}
-              </DropdownButton>
-              <DropdownButton variant="primary" title="Choose a league">
-                {["LCS", "LEC", "LCK", "LPL"].map(league => (
-                  <Dropdown.Item onClick={() => this.onClickLeague(league, false)}> {league} </Dropdown.Item>
-                ))}
-              </DropdownButton>
-              <DropdownButton variant="primary" title="Choose a player" size="sm">
-                {leagueRight.map(player => (
-                  <Dropdown.Item onClick={() => this.onClickPlayer(player, false)}> {player.PLAYER} </Dropdown.Item>
-                ))}
-              </DropdownButton>
-            </ButtonToolbar>
+            <MainHeader />
+            
           </div>
+          <Container style={{borderRadius: '25px', width: '100%', background:'#f6f6f6'}}>
+            <Row className="justify-content-md-center">
+              <Col md="auto">
+                <h3 style={{paddingTop: '5%', paddingBottom: '5%'}}>
+                  {this.getPlayerName(playerLeft)} vs. {this.getPlayerName(playerRight)}
+                </h3>
+              </Col>
+            </Row>
+            <Row >
+              <Col xs={6} >
+                <ButtonToolbar style={{paddingLeft: '30%'}}>
+                  <DropdownButton style={{paddingRight:'0.5%'}} variant="danger" title="Choose a league">
+                    {["LCS", "LEC", "LCK", "LPL"].map(league => (
+                      <Dropdown.Item onClick={() => this.onClickLeague(league, true)}> {league} </Dropdown.Item>
+                    ))}
+                  </DropdownButton>
+                  <DropdownButton variant="danger" title="Choose a player" size="sm">
+                    {leagueLeft.map(player => (
+                      <Dropdown.Item onClick={() => this.onClickPlayer(player, true)}> {player.PLAYER} </Dropdown.Item>
+                    ))}
+                  </DropdownButton>
+                </ButtonToolbar>
+              </Col>
+              <Col xs={6}>
+                <ButtonToolbar style={{paddingLeft: '10%'}}>
+                  <DropdownButton style={{paddingRight:'0.5%'}} variant="primary" title="Choose a league">
+                    {["LCS", "LEC", "LCK", "LPL"].map(league => (
+                      <Dropdown.Item onClick={() => this.onClickLeague(league, false)}> {league} </Dropdown.Item>
+                    ))}
+                  </DropdownButton>
+                  <DropdownButton  variant="primary" title="Choose a player" size="sm">
+                    {leagueRight.map(player => (
+                      <Dropdown.Item onClick={() => this.onClickPlayer(player, false)}> {player.PLAYER} </Dropdown.Item>
+                    ))}
+                  </DropdownButton>
+                </ButtonToolbar>
+              </Col>
+            </Row>
+            <br/>
+          </Container>
 
           <div>
             <Visuals player1={playerLeft} player2={playerRight} />
           </div>
         </div>
-
       );
     }
 }
