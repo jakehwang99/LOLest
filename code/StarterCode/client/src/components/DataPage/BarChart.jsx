@@ -109,7 +109,7 @@ class BarChart extends React.Component {
         const node = this.node; // the svg element itself
 
         // Set the margins and size of graph
-        let mtop = 30, mright = 30, mbot = 100, mleft = 60;
+        let mtop = 100, mright = 60, mbot = 100, mleft = 60;
         let width = this.props.size[0] - mleft - mright;
         let height = this.props.size[1] - mtop - mbot;
 
@@ -129,11 +129,23 @@ class BarChart extends React.Component {
         d3.select(node).selectAll("g").remove();
 
         // Use a g element rather than the svg directly to account for margins
-        let svg = d3.select(node).append("g")
-            .attr("transform", "translate(" + mleft + "," + mtop + ")")
-            .attr("class", "g_main");
+        let svg = d3.select(node)
+            .attr("class", "viz")
+            .append("g")
+                .attr("transform", "translate(" + mleft + "," + mtop + ")")
+                .attr("class", "g_main");
 
-        // Create the scales for x and y axis
+        // Create title
+        svg.append("g").append("text")
+            .attr("x", (width/2))
+            .attr("y", 0 - (mtop/2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "28px")
+            .style("text-decoration", "underline")
+            .style("font-weight", "bold")
+            .text(`${this.state.stat} per Player`)
+
+        // Create the scales, axis, and gridlines for x and y axis
         let xScale = d3.scaleBand()
             .range([0, width])
             .domain(selection.map(d => { return d.PLAYER }))
@@ -148,7 +160,7 @@ class BarChart extends React.Component {
                 .style("font-size", Math.min(Math.floor(xScale.bandwidth()/3.5), 20) + "px");
 
         let yScale = d3.scaleLinear()
-            .domain([0, d3.max(this.props.data.map(d => parseInt(d[this.state.stat])))])
+            .domain([0, d3.max(this.props.data.map(d => parseFloat(d[this.state.stat])))])
             .range([height, 0])
             .nice();
     
@@ -157,6 +169,13 @@ class BarChart extends React.Component {
             .call(d3.axisLeft(yScale))
             .attr("font-size", "24px");
 
+        svg.append("g")
+            .attr("class", "grid")
+            .call(d3.axisLeft(yScale)
+                .ticks()
+                .tickSize(-width)
+                .tickFormat("")
+            );
 
         // Create the bar chart
         svg.append("g")
@@ -181,8 +200,11 @@ class BarChart extends React.Component {
                 .attr("y", d => {return yScale(d[this.state.stat])})
                 .attr("width", xScale.bandwidth())
                 .attr("height", d => {return height - yScale(d[this.state.stat])})
-                .attr("fill", d => { return this.props.hoverElement == d.PLAYER ? "#000000" : colors[this.props.league][d.TEAM]})
-                .on("mouseenter", this.props.onHover);
+                .attr("fill", d => { return colors[this.props.league][d.TEAM] })
+                .attr("fill-opacity", d => { return this.props.hoverElement == d.PLAYER ? "0.65" : "1.0" })
+                .attr("stroke-width", d => { return this.props.hoverElement == d.PLAYER ? "3" : "0.0"})
+                .attr("stroke", d => {return colors[this.props.league][d.TEAM] })
+                .on("mouseenter", this.props.onHover)
     }
 
     handleTeamClick(e) {

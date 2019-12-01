@@ -44,3 +44,9 @@ button {
 .sidebar {
     pointer-events: all;
 }
+
+/* This centers the visualization graphs */
+svg.viz {
+    display: block;
+    margin: auto;
+}

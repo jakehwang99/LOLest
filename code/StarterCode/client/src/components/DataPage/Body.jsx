@@ -15,6 +15,7 @@ class Body extends React.Component {
     constructor(props) {
         super(props);
         this.onHover = this.onHover.bind(this);
+        this.onUnhover = this.onUnhover.bind(this);
         this.state = {
             activeTab: 0,
             selectedOption: null,
@@ -26,6 +27,11 @@ class Body extends React.Component {
     // Used for hover functionality with D3 - will set the hover element to the correct PLAYER when hovered
     onHover(d) {
         this.setState({hover: d.PLAYER});
+    }
+
+    onUnhover(d) {
+        console.log("mouseleave");
+        this.setState({hover: "none"});
     }
 
     handleChange = selectedOption => {
@@ -71,6 +77,7 @@ class Body extends React.Component {
               <TabPanel><BarChart 
                             hoverElement={this.state.hover} 
                             onHover={this.onHover} 
+                            onUnhover={this.onUnhover}
                             size={[1200, 760]} 
                             data={leagueData}
                             league={this.props.league} 
