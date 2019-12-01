@@ -19,11 +19,12 @@ let colors = {
 
 class ParallelCoords extends React.Component {
     constructor(props) {
-        super(props)
-        this.state = {teams: ['Cloud9']}
+        super(props);
+        this.state = {teams: ['Cloud9']};
         // Bind component as context to any new internal functions
         // (Doesn't need to be done for existing lifecycle functions)
-        this.createLineChart = this.createLineChart.bind(this)
+        this.createLineChart = this.createLineChart.bind(this);
+        this.brushEnd = this.brushEnd.bind(this);
     }
 
     componentDidMount() {
@@ -69,8 +70,6 @@ class ParallelCoords extends React.Component {
             return d != "PLAYER" && d != "TEAM" && d != "Champs"
                 && d != "WR" && d != "KPAR" && d != "KS" && d != "GS";
         })
-        console.log(this.props.data[0])
-        console.log(dimensions)
 
         // For each dimension, construct a linear scale
         let y = {}
@@ -99,8 +98,19 @@ class ParallelCoords extends React.Component {
             .enter().append("path")
             .attr("d", path)
             .style("fill", "none")
-            .style("stroke", d => colors[d.TEAM])
+            .style("stroke", "#cccccc")
             .style('opacity", 0.5')
+            
+        if(this.props.filteredData != null) {
+            svg.selectAll("myPath")
+                .data(this.props.filteredData)
+                .enter().append("path")
+                .attr("d", path)
+                .style("fill", "none")
+                .style("stroke", d => colors[d.TEAM])
+                .style("stroke-width", 2)
+                .style('opacity", 1.0');
+        }
             
         let g = svg.selectAll(".dimension")
             .data(dimensions).enter()
@@ -117,18 +127,36 @@ class ParallelCoords extends React.Component {
                 .style("text-anchor", "middle")
                 .attr("y", -9)
                 .text(function(d) { return d; })
-                .style("fill", "black")
+                .style("fill", "black");
 
+        let thisHolder = this;
         g.append("g")
             .attr("class", "brush")
+            .attr("ref", "brush")
             .each(function(d) {
-                d3.select(this).call(y[d].brush = d3.brush().extent([[-8, 0],[8, height]]))
+                d3.select(this)
+                    .call(y[d].brush = d3.brushY()
+                        .extent([[-8, -1],[8, height+1]])
+                        .on("end", function() {
+                            thisHolder.brushEnd(y, d);
+                        })
+                    ) 
             })
-            .selectAll("rect")
-                .attr("x", -8)
-                .attr("width", 16);
-                
+    }
 
+    brushEnd(yScales, dimension) {
+        let bounds = null;
+        if(d3.event && d3.event.selection) {
+            const [y1, y2] = d3.event.selection;
+            bounds = [
+                yScales[dimension].invert(y1),
+                yScales[dimension].invert(y2)
+            ];
+        }
+
+        let b = {};
+        b[dimension] = bounds;
+        this.props.onBrush(b);
     }
 
     render() {

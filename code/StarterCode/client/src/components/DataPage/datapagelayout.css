@@ -50,3 +50,10 @@ svg.viz {
     display: block;
     margin: auto;
 }
+
+/* This colors the grid lines lighter */
+.grid line{
+    stroke: lightgrey;
+    stroke-opacity: 0.85;
+    shape-rendering: crispEdges;
+}

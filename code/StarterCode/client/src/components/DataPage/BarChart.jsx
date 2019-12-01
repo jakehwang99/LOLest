@@ -166,7 +166,7 @@ class BarChart extends React.Component {
         let xScale = d3.scaleBand()
             .range([0, width])
             .domain(selection.map(d => { return d.PLAYER }))
-            .padding(0.2);
+            .padding(0.05);
 
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")

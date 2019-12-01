@@ -15,12 +15,14 @@ class Body extends React.Component {
     constructor(props) {
         super(props);
         this.onHover = this.onHover.bind(this);
-        this.onUnhover = this.onUnhover.bind(this);
+        this.onBrush = this.onBrush.bind(this);
         this.state = {
             activeTab: 0,
             selectedOption: null,
             disablePlayerInfoTab: true,
             hover: "none",
+            filters: {}, 
+            filtered: this.props.leagueData, 
         };
     }
 
@@ -29,9 +31,22 @@ class Body extends React.Component {
         this.setState({hover: d.PLAYER});
     }
 
-    onUnhover(d) {
-        console.log("mouseleave");
-        this.setState({hover: "none"});
+    onBrush(filter) {
+        //const filters = Object.assign({}, this.state.filters, filter);
+        let filters = filter;
+        let li = [];
+        for(let key in filters) {
+            li.push([key, filters[key]])
+        }
+        const filtered = this.props.leagueData.filter(d =>
+            li.every((b) => {
+                let attr = b[0]
+                let bounds = b[1]
+                return !bounds || bounds[0] > d[attr] && d[attr] > bounds[1]
+            })
+        )
+
+        this.setState({filters, filtered});
     }
 
     handleChange = selectedOption => {
@@ -75,6 +90,8 @@ class Body extends React.Component {
               <TabPanel><Table data={leagueData} /></TabPanel>
               <TabPanel><ParallelCoords 
                             size={[1400, 760]} 
+                            onBrush={this.onBrush}
+                            filteredData={this.state.filtered}
                             data={leagueData} 
                             league={this.props.league}
                         />
@@ -82,7 +99,6 @@ class Body extends React.Component {
               <TabPanel><BarChart 
                             hoverElement={this.state.hover} 
                             onHover={this.onHover} 
-                            onUnhover={this.onUnhover}
                             size={[1200, 760]} 
                             data={leagueData}
                             league={this.props.league} 
