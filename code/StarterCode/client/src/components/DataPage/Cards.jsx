@@ -15,7 +15,7 @@ class Cards extends React.Component {
         return(
             <div>
                 <Card className="text-center">
-                    <Button variant="light"> <Image src={plusIcon}/> Add to list </Button>
+                    {/* <Button variant="light"> <Image src={plusIcon}/> Add to list </Button> */}
                     <Card.Title>{playerName}</Card.Title>
                     <Card.Img className="mx-auto d-block" style={{ width: '18rem' }} variant="top" src={playerPage.Image} />
                     <Card.Body>
