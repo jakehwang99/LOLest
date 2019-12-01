@@ -9,6 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const axios = require('axios');
 
+//fixed merge
+
 class ComparePage extends React.Component {
     constructor(props) {
         super(props);
