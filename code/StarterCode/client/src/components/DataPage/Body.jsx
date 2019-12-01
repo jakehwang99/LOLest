@@ -4,6 +4,7 @@ import { Tabs, Tab, TabList, TabPanel } from "react-tabs";
 import Select from 'react-select';
 import Table from './Table.jsx';
 import Cards from './Cards.jsx';
+import Compare from "../ComparePage/ComparePage.jsx";
 import './datapagelayout.css';
 import 'react-tabs/style/react-tabs.css';
 
@@ -55,11 +56,13 @@ class Body extends React.Component {
                   <Tab> Table </Tab>
                   <Tab> Line Chart </Tab>
                   <Tab> Bar Graph </Tab>
+                  <Tab> Compare </Tab>
                   <Tab disabled={disablePlayerInfoTab}> Player Info </Tab>
               </TabList>
               <TabPanel><Table data={leagueData} /></TabPanel>
               <TabPanel>Line Chart</TabPanel>
               <TabPanel>Bar Graph</TabPanel>
+              <TabPanel><Compare /></TabPanel>
               <TabPanel>
                   { playerPage && <Cards playerPage={playerPage} /> }
               </TabPanel>

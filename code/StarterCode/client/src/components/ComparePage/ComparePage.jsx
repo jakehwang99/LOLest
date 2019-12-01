@@ -65,10 +65,6 @@ class ComparePage extends React.Component {
 
       return (
         <div>
-          <div>
-            <MainHeader />
-            
-          </div>
           <Container style={{borderRadius: '25px', width: '100%', background:'#f6f6f6'}}>
             <Row className="justify-content-md-center">
               <Col md="auto">
@@ -85,7 +81,7 @@ class ComparePage extends React.Component {
                       <Dropdown.Item onClick={() => this.onClickLeague(league, true)}> {league} </Dropdown.Item>
                     ))}
                   </DropdownButton>
-                  <DropdownButton variant="danger" title="Choose a player" size="sm">
+                  <DropdownButton variant="danger" title="Choose a player">
                     {leagueLeft.map(player => (
                       <Dropdown.Item onClick={() => this.onClickPlayer(player, true)}> {player.PLAYER} </Dropdown.Item>
                     ))}
@@ -99,7 +95,7 @@ class ComparePage extends React.Component {
                       <Dropdown.Item onClick={() => this.onClickLeague(league, false)}> {league} </Dropdown.Item>
                     ))}
                   </DropdownButton>
-                  <DropdownButton  variant="primary" title="Choose a player" size="sm">
+                  <DropdownButton  variant="primary" title="Choose a player">
                     {leagueRight.map(player => (
                       <Dropdown.Item onClick={() => this.onClickPlayer(player, false)}> {player.PLAYER} </Dropdown.Item>
                     ))}

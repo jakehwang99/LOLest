@@ -21,8 +21,6 @@ class Main extends React.Component {
             <div>
               <Button style={{ width: '8rem' }} variant="dark" href="http://localhost:8080/stream">Stream</Button>
               {'        '}
-              <Button style={{ width: '8rem' }} variant="dark" href="http://localhost:8080/compare">Compare</Button>
-              {'        '}
               <Button style={{ width: '8rem' }} variant="dark" href="http://localhost:8080/data">Data</Button>
 
             </div>
