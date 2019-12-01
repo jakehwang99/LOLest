@@ -86,7 +86,6 @@ class ParallelCoords extends React.Component {
             .range([0, width])
             .padding(1)
             .domain(dimensions)
-
             
         function path(d) {
             return d3.line()(dimensions.map(
@@ -94,7 +93,6 @@ class ParallelCoords extends React.Component {
             ))
         }
 
-        
         // draw the lines
         svg.selectAll("myPath")
             .data(this.props.data)
@@ -104,18 +102,31 @@ class ParallelCoords extends React.Component {
             .style("stroke", d => colors[d.TEAM])
             .style('opacity", 0.5')
             
-        svg.selectAll("myAxis")
+        let g = svg.selectAll(".dimension")
             .data(dimensions).enter()
             .append("g")
+            .attr("class", "dimension")
             .attr("transform", function(d) {
                 return "translate(" + x(d) + ")";
             })
+         
+        g.append("g")
+            .attr("class", "axis")
             .each(function(d) { d3.select(this).call(d3.axisLeft().scale(y[d])); })
             .append("text")
                 .style("text-anchor", "middle")
                 .attr("y", -9)
                 .text(function(d) { return d; })
                 .style("fill", "black")
+
+        g.append("g")
+            .attr("class", "brush")
+            .each(function(d) {
+                d3.select(this).call(y[d].brush = d3.brush().extent([[-8, 0],[8, height]]))
+            })
+            .selectAll("rect")
+                .attr("x", -8)
+                .attr("width", 16);
                 
 
     }
