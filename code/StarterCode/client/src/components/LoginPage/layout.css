@@ -88,13 +88,13 @@
 .container .info span .fa {
   color: #EF3B3A;
 }
-body {
+.body {
   background: #999999; 
   background: -webkit-linear-gradient(right, #999999, #999999);
   background: -moz-linear-gradient(right, #999999, #999999);
   background: -o-linear-gradient(right, #999999, #999999);
   background: linear-gradient(to left, #999999, #999999);
-  background-image: url(homeBackground1.jpg); 
+  background-image: url(homeBackground2.jpg); 
   background-position: center;
   background-attachment: fixed;
   background-size: 100%;
