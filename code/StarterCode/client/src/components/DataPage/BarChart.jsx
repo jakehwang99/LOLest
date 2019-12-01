@@ -72,6 +72,23 @@ class BarChart extends React.Component {
 
     // Fire bar chart function whenever component first mounts
     componentDidMount() {
+        if(this.props.league && this.props.data) {
+            // On league change, we need to update the team and stat lists.
+            if(this.state.currLeague != this.props.league) {
+                let choices = [];
+                let stats = [];
+                for(let d of Object.keys(colors[this.props.league])) {
+                    choices.push(d);
+                }
+                for(let stat of Object.keys(this.props.data[0])) {
+                    if(stat != "TEAM" && stat != "PLAYER" && stat != "Champs") {
+                        stats.push(stat);
+                    }
+                }
+
+                this.setState({currLeague: this.props.league, choices: choices, stats: stats});
+            }
+        }
         this.createBarChart();
     }
 
