@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
-import Faker from '../../images/sktFaker.png';
+import { Card, ListGroup, ListGroupItem, Button, Image } from "react-bootstrap";
+import plusIcon from "../../images/plusIcon.png";
 
 class Cards extends React.Component {
     constructor(props) {
@@ -10,11 +10,13 @@ class Cards extends React.Component {
     }
 
     render (){
-        const { playerPage } = this.props;
-
+        const { playerPage, playerName } = this.props;
+        console.log(playerPage);
         return(
             <div>
                 <Card className="text-center">
+                    {/* <Button variant="light"> <Image src={plusIcon}/> Add to list </Button> */}
+                    <Card.Title>{playerName}</Card.Title>
                     <Card.Img className="mx-auto d-block" style={{ width: '18rem' }} variant="top" src={playerPage.Image} />
                     <Card.Body>
                         <ListGroup className="list-group-flush">
@@ -64,7 +66,8 @@ class Cards extends React.Component {
 }
 
 Cards.propTypes = {
-  playerPage: PropTypes.array,
+  playerPage: PropTypes.object,
+  playerName: PropTypes.string,
 };
 
 export default Cards;

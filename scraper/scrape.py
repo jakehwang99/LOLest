@@ -98,6 +98,7 @@ if __name__ == '__main__':
                 data = json.loads(df.T.to_json()).values()
                 col.insert_many(data)
                 
+                print(df)
                 #print("writing data to {0}.csv\n".format(currentMatch))
                 #df.to_csv("data/{0}.csv".format(currentMatch), index=False)
 
