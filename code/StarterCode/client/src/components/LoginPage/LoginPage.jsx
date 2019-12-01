@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import MainHeader from "../MainHeader.jsx";
-import homeBackground from './homeBackground1.jpg';
 import { Image, Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./layout.css";
 
@@ -90,21 +89,23 @@ class LoginPage extends React.Component {
           <div>
             <MainHeader />
           </div>
-          <div className="login-page">
-            <div className="form">
-              <form className="login-form" onSubmit={this.handleSubmit}>
-              {
-                this.state.error &&
-                <p data-test="error" onClick={this.dismissError}>
-                  <button onClick={this.dismissError}>✖</button>
-                  {this.state.error}
-                </p>
-              }
-                <input type="text" data-test="username" placeholder="username" value={this.state.username} onChange={this.handleUserChange} />
-                <input type="password" data-test="password" placeholder="password" value={this.state.password} onChange={this.handlePassChange} />
-                <input className="buttonbutton" type="submit" value="Sign In" data-test="submit"/>
-                <p className="message">Not registered? <a href="/register">Create an account</a></p>
-              </form>
+          <div className="body">
+            <div className="login-page">
+              <div className="form">
+                <form className="login-form" onSubmit={this.handleSubmit}>
+                {
+                  this.state.error &&
+                  <p data-test="error" onClick={this.dismissError}>
+                    <button onClick={this.dismissError}>✖</button>
+                    {this.state.error}
+                  </p>
+                }
+                  <input type="text" data-test="username" placeholder="username" value={this.state.username} onChange={this.handleUserChange} />
+                  <input type="password" data-test="password" placeholder="password" value={this.state.password} onChange={this.handlePassChange} />
+                  <input className="buttonbutton" type="submit" value="Sign In" data-test="submit"/>
+                  <p className="message">Not registered? <a href="/register">Create an account</a></p>
+                </form>
+              </div>
             </div>
           </div>
         </div>

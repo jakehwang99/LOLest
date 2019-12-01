@@ -1,6 +1,5 @@
 import React from "react";
-import { Container, Row, Navbar, Button } from "react-bootstrap";
-import { Redirect } from 'react-router-dom';
+import { Navbar, Button } from "react-bootstrap";
 import logo from '../images/logo3.png';
 import './MainHeader.css';
 
@@ -13,22 +12,25 @@ class MainHeader extends React.Component {
 
     render () {
       return (
-        <Container>
-          <Row className="justify-content-md-center">
-            <Navbar bg="white">
-              <Navbar.Brand href="http://localhost:8080">
-                <Button variant="light">
-                  <img
-                    src={logo}
-                    width="50"
-                    height="50"
-                    alt="lolest logo"
-                  />
-                </Button>
-              </Navbar.Brand>
-            </Navbar>
-          </Row>
-        </Container>      
+        <div className="d-inline-block">
+          <Navbar bg="white">
+            <Navbar.Brand href="http://localhost:8080">
+              <Button variant="light">
+                <img
+                  src={logo}
+                  width="50"
+                  height="50"
+                  alt="lolest logo"
+                />
+              </Button>
+            </Navbar.Brand>
+             <Navbar.Brand href="http://localhost:8080/login" className="loginButton">
+              <Button variant="light">
+                Login
+              </Button>
+            </Navbar.Brand>
+          </Navbar>
+        </div>      
       );
     }
 }
