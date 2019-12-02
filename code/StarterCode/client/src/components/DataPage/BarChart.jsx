@@ -89,6 +89,7 @@ class BarChart extends React.Component {
                 this.setState({currLeague: this.props.league, choices: choices, stats: stats});
             }
         }
+        
         this.createBarChart();
     }
 
@@ -112,6 +113,7 @@ class BarChart extends React.Component {
                 this.setState({currLeague: this.props.league, choices: choices, stats: stats});
             }
         }
+
         this.createBarChart();
     }
 
@@ -131,19 +133,23 @@ class BarChart extends React.Component {
         let height = this.props.size[1] - mtop - mbot;
 
         // Filter for only the players that we want
-        let selection = this.props.data.filter(
-            d => {for(let t of this.state.teams) {
-                    if (d.TEAM == t) {
-                        return true;
+        let selection = this.props.data
+            .sort((a, b) => 
+                d3.descending(parseFloat(a[this.state.stat]), parseFloat(b[this.state.stat]))
+            )
+            .filter(
+                d => {for(let t of this.state.teams) {
+                        if (d.TEAM == t) {
+                            return true;
+                        }
                     }
+                    return false;
                 }
-                return false;
-            }
-        );
+            );
 
         // Remove all elements from previous graphs
         // TODO: make this a transition instead
-        d3.select(node).selectAll("g").remove();
+        d3.select(node).selectAll("g.g_main").remove();
 
         // Use a g element rather than the svg directly to account for margins
         let svg = d3.select(node)
@@ -222,6 +228,47 @@ class BarChart extends React.Component {
                 .attr("stroke-width", d => { return this.props.hoverElement == d.PLAYER ? "3" : "0.0"})
                 .attr("stroke", d => {return colors[this.props.league][d.TEAM] })
                 .on("mouseenter", this.props.onHover)
+
+        if(this.props.hoverElement == null || this.props.hoverElement == "none") {
+            return;
+        }    
+
+        // Create tooltip, if there is something selected
+        let selected = this.props.hoverFullElement;
+        let tipWidth = 100, tipHeight = 50, tipPadding = 10, tipFontSize = 16;
+        let tooltip = svg.append("g")
+            .attr("class", "g_tooltip")
+            .attr("transform", `translate(
+                ${xScale(selected["PLAYER"]) - tipWidth*0.5+ xScale.bandwidth()*0.5}, 
+                ${yScale(selected[this.state.stat]) - tipHeight - tipPadding})`
+            )
+            .attr("z-index", "10");
+            
+        tooltip.append("rect")
+                .attr("width", `${tipWidth}px`)
+                .attr("height", `${tipHeight}px`)
+                .attr("rx", "5px")
+                .attr("ry", "5px")
+                .attr("fill", colors[this.props.league][selected.TEAM])//"#dddddd")
+                .attr("fill-opacity", 0.6)
+                .style("position", "absolute")
+        
+        tooltip.append("text")
+            .attr("text-anchor", "middle")
+            .attr("x", `${tipWidth/2}px`)
+            .attr("y", `${tipFontSize + tipPadding/2}px`)
+            .style("font-size", `${tipFontSize}px`)
+            .style("font-weight", "bold")
+            .text(`${selected["PLAYER"]}`);
+
+        tooltip.append("text")
+            .attr("text-anchor", "middle")
+            .attr("x", `${tipWidth/2}px`)
+            .attr("y", `${tipFontSize*2 + tipPadding}px`)
+            .style("font-size", `${tipFontSize}px`)
+            .style("font-weight", "bold")
+            .text(`${selected[this.state.stat]}`);
+
     }
 
     handleTeamClick(e) {

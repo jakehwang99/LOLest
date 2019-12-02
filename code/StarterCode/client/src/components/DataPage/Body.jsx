@@ -21,6 +21,7 @@ class Body extends React.Component {
             selectedOption: null,
             disablePlayerInfoTab: true,
             hover: "none",
+            hover2: {},
             filters: {}, 
             filtered: this.props.leagueData, 
         };
@@ -28,7 +29,7 @@ class Body extends React.Component {
 
     // Used for hover functionality with D3 - will set the hover element to the correct PLAYER when hovered
     onHover(d) {
-        this.setState({hover: d.PLAYER});
+        this.setState({hover: d.PLAYER, hover2: d});
     }
 
     onBrush(filter) {
@@ -100,6 +101,7 @@ class Body extends React.Component {
               </TabPanel>
               <TabPanel><BarChart 
                             hoverElement={this.state.hover} 
+                            hoverFullElement={this.state.hover2}
                             onHover={this.onHover} 
                             size={[1200, 760]} 
                             data={leagueData}
