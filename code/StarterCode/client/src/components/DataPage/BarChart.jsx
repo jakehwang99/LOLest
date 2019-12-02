@@ -85,7 +85,6 @@ class BarChart extends React.Component {
                         stats.push(stat);
                     }
                 }
-
                 this.setState({currLeague: this.props.league, choices: choices, stats: stats});
             }
         }
@@ -128,8 +127,8 @@ class BarChart extends React.Component {
         const node = this.node; // the svg element itself
 
         // Set the margins and size of graph
-        let mtop = 100, mright = 60, mbot = 100, mleft = 60;
-        let width = this.props.size[0] - mleft - mright;
+        let mtop = 100, mright = 60, mbot = 100, mleft = 60 + 300;
+        let width = this.props.size[0]+300 - mleft - mright;
         let height = this.props.size[1] - mtop - mbot;
 
         // Filter for only the players that we want
@@ -150,12 +149,13 @@ class BarChart extends React.Component {
         // Remove all elements from previous graphs
         // TODO: make this a transition instead
         d3.select(node).selectAll("g.g_main").remove();
+        d3.select(node).selectAll("g.legend").remove();
 
         // Use a g element rather than the svg directly to account for margins
         let svg = d3.select(node)
             .attr("class", "viz")
             .append("g")
-                .attr("transform", "translate(" + mleft + "," + mtop + ")")
+                .attr("transform", "translate(" + (mleft+250) + "," + mtop + ")")
                 .attr("class", "g_main");
 
         // Create title
@@ -163,7 +163,7 @@ class BarChart extends React.Component {
             .attr("x", (width/2))
             .attr("y", 0 - (mtop/2))
             .attr("text-anchor", "middle")
-            .style("font-size", "28px")
+            .style("font-size", "32px")
             .style("text-decoration", "underline")
             .style("font-weight", "bold")
             .text(`${this.state.stat} per Player`)
@@ -200,6 +200,63 @@ class BarChart extends React.Component {
                 .tickFormat("")
             );
 
+        // Create a legend
+        let legend = d3.select(node).append("g")
+            .attr("class", "legend")
+            .attr("transform", `translate(0,0)`);
+            
+        let th = this;
+
+        legend.selectAll("rect")
+            .data(Object.keys(colors[this.props.league]))
+            .enter()
+            .append("rect")
+                .attr("class", "legendSquare")
+                .attr("fill", d => colors[this.props.league][d])
+                .attr("fill-opacity", d => {
+                    return this.state.teams.includes(d) ? "0.95" : "0.1";
+                })
+                .attr("stroke", "black")
+                .attr("stroke-width", "1px")
+                .attr("cursor", "pointer")
+                .attr("x", (d, i) => ((i%2)*245 + 5))
+                .attr("y", (d, i) => (Math.floor(i/2)*50 + 160))
+                .attr("width", "25px")
+                .attr("height", "25px")
+                .on("click", function(d) { 
+                    let temp = [];
+                    for(let t of th.state.teams) {
+                        temp.push(t);
+                    }
+                    if(!temp.includes(d)) {
+                        temp.push(d);
+                    }
+                    else {
+                        let index = temp.indexOf(d);
+                        temp.splice(index, 1);
+                    }
+                    th.handleTeamClick(temp)
+                });
+                
+        legend.selectAll("text")
+            .data(Object.keys(colors[this.props.league]))
+            .enter()
+            .append("text")
+                .attr("class", "legendText")
+                .text(d => d)
+                .style("font-size", "20px")
+                .attr("x", (d, i) => ((i%2)*245 + 35))
+                .attr("y", (d, i) => (Math.floor(i/2)*50 + 180));
+
+        legend.append("text")
+            .text(`Select ${this.props.league} Teams`)
+            .attr("x", 250)
+            .attr("y", 130)
+            .attr("text-anchor", "middle")
+            .style("font-size", "24px")
+            .style("text-decoration", "underline")
+            .style("font-weight", "bold")
+
         // Create the bar chart
         svg.append("g")
             .style("height", height)
@@ -220,16 +277,18 @@ class BarChart extends React.Component {
         svg.select("g.chartHolder")
             .selectAll("rect.bar")
                 .attr("x", d => {return xScale(d["PLAYER"])})
-                .attr("y", d => {return yScale(d[this.state.stat])})
+                .attr("y", d => {return yScale(parseFloat(d[this.state.stat]))})
                 .attr("width", xScale.bandwidth())
-                .attr("height", d => {return height - yScale(d[this.state.stat])})
+                .attr("height", d => {return height - yScale(parseFloat(d[this.state.stat]))})
                 .attr("fill", d => { return colors[this.props.league][d.TEAM] })
                 .attr("fill-opacity", d => { return this.props.hoverElement == d.PLAYER ? "0.65" : "1.0" })
                 .attr("stroke-width", d => { return this.props.hoverElement == d.PLAYER ? "3" : "0.0"})
                 .attr("stroke", d => {return colors[this.props.league][d.TEAM] })
                 .on("mouseenter", this.props.onHover)
 
-        if(this.props.hoverElement == null || this.props.hoverElement == "none") {
+        if(this.props.hoverElement == null 
+            || this.props.hoverElement == "none" 
+            || !this.state.teams.includes(this.props.hoverFullElement.TEAM)) {
             return;
         }    
 
@@ -240,7 +299,7 @@ class BarChart extends React.Component {
             .attr("class", "g_tooltip")
             .attr("transform", `translate(
                 ${xScale(selected["PLAYER"]) - tipWidth*0.5+ xScale.bandwidth()*0.5}, 
-                ${yScale(selected[this.state.stat]) - tipHeight - tipPadding})`
+                ${yScale(parseFloat(selected[this.state.stat])) - tipHeight - tipPadding})`
             )
             .attr("z-index", "10");
             
@@ -286,10 +345,8 @@ class BarChart extends React.Component {
             return (
                 <div>
                     <svg ref={node => this.node = node}
-                        width={this.props.size[0]} height={this.props.size[1]}>
+                        width={this.props.size[0]+500} height={this.props.size[1]}>
                     </svg>
-                    <p>Select team:</p>
-                    <RadioButtonGroup type="checkbox" selections={this.state.choices} default={this.state.choices[0]} handleClick={this.handleTeamClick} />
                     <p>Select stat:</p>
                     <RadioButtonGroup type="radio" selections={this.state.stats} default="CS" handleClick={this.handleStatClick} />
                 </div>
