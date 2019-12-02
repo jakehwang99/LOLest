@@ -6,6 +6,7 @@ import Table from './Table.jsx';
 import BarChart from './BarChart.jsx';
 import ParallelCoords from './ParallelCoords.jsx'
 import Cards from './Cards.jsx';
+import Compare from "../ComparePage/ComparePage.jsx";
 import './datapagelayout.css';
 import 'react-tabs/style/react-tabs.css';
 
@@ -73,7 +74,7 @@ class Body extends React.Component {
 
     render () {
       const { activeTab, selectedOption, playerPage, disablePlayerInfoTab, player_name } = this.state;
-      const { options, leagueData } = this.props;   
+      const { options, leagueData, isLeagueSelected } = this.props;   
       
       return (
         <div className="body">
@@ -86,11 +87,13 @@ class Body extends React.Component {
             <Tabs defaultIndex={activeTab} onSelect={activeTab => this.setState({ activeTab })}>
               <TabList>
                   <Tab> Table </Tab>
-                  <Tab> Line Chart </Tab>
-                  <Tab> Bar Graph </Tab>
+                  <Tab> Compare </Tab>
+                  <Tab disabled={!isLeagueSelected} > Line Chart </Tab>
+                  <Tab disabled={!isLeagueSelected} > Bar Graph </Tab>
                   <Tab disabled={disablePlayerInfoTab}> Player Info </Tab>
               </TabList>
               <TabPanel><Table data={leagueData} /></TabPanel>
+              <TabPanel><Compare /></TabPanel>
               <TabPanel><ParallelCoords 
                             size={[1400, 760]} 
                             onBrush={this.onBrush}
@@ -122,6 +125,7 @@ Body.propTypes = {
   options: PropTypes.array,
   leagueData: PropTypes.array,
   league: PropTypes.string,
+  isLeagueSelected: PropTypes.bool,
 };
 
 export default Body;

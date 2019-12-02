@@ -18,7 +18,8 @@ class DataPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          sidebarOpen: false
+          sidebarOpen: false,
+          isLeagueSelected: false
         };
         // this.getTeams();
     }
@@ -54,7 +55,7 @@ class DataPage extends React.Component {
       const leagueUrl = "http://localhost:5000/LCS_Summer_2019";
       this.getPlayers(playersUrl);
       this.getData(leagueUrl);
-      this.setState({ league: "LCS"});
+      this.setState({ league: "LCS", isLeagueSelected: true});
     }
 
     onClickLEC = () => {
@@ -62,7 +63,7 @@ class DataPage extends React.Component {
       const leagueUrl = "http://localhost:5000/LEC_Summer_2019";
       this.getPlayers(playersUrl);
       this.getData(leagueUrl);
-      this.setState({ league: "LEC"});
+      this.setState({ league: "LEC", isLeagueSelected: true});
     }
 
     onClickLCK = () => {
@@ -70,7 +71,7 @@ class DataPage extends React.Component {
       const leagueUrl = "http://localhost:5000/LCK_Summer_2019";
       this.getPlayers(playersUrl);
       this.getData(leagueUrl);
-      this.setState({ league: "LCK"});
+      this.setState({ league: "LCK", isLeagueSelected: true});
     }
 
     onClickLPL = () => {
@@ -78,7 +79,7 @@ class DataPage extends React.Component {
       const leagueUrl = "http://localhost:5000/LPL_Summer_2019";
       this.getPlayers(playersUrl);
       this.getData(leagueUrl);
-      this.setState({ league: "LPL"});
+      this.setState({ league: "LPL", isLeagueSelected: true });
     }
 
     formatPlayers = (data) => {
@@ -102,7 +103,7 @@ class DataPage extends React.Component {
     }
 
     render () {
-      const { sidebarOpen, options, leagueData, league } = this.state;
+      const { sidebarOpen, options, leagueData, league, isLeagueSelected } = this.state;
       
       return (
         <div>
@@ -130,7 +131,7 @@ class DataPage extends React.Component {
             <MainHeader />
           </div>
 
-          <Body options={options} leagueData={leagueData} league={league}/>
+          <Body options={options} leagueData={leagueData} league={league} isLeagueSelected={isLeagueSelected}/>
 
         </div>      
       );

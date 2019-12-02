@@ -24,11 +24,6 @@ class MainHeader extends React.Component {
                 />
               </Button>
             </Navbar.Brand>
-             <Navbar.Brand href="http://localhost:8080/login" className="loginButton">
-              <Button variant="light">
-                Login
-              </Button>
-            </Navbar.Brand>
           </Navbar>
         </div>      
       );
