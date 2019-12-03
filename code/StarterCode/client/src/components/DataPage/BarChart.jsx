@@ -50,12 +50,12 @@ let colors = {
         "LNG Esports": "#95f985",
         "Oh My God": "#003366",
         "Rogue Warriors": "#999999",
-        "Royal Never Give Up": "#ffa500",
-        "Suning": "#018920",
-        "Team WE": "#fcc201",
-        "Top Esports": "#95f985",
-        "Vici Gaming": "#003366",
-        "Victory Five": "#999999"
+        "Royal Never Give Up": "#3399ff",
+        "Suning": "#00ffff",
+        "Team WE": "#ff8000",
+        "Top Esports": "#cc00cc",
+        "Vici Gaming": "#66cc00",
+        "Victory Five": "#b03839"
     }
 };
 
