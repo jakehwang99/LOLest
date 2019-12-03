@@ -5,22 +5,65 @@ import RadioButtonGroup from './RadioButtonGroup.jsx'
 // https://www.d3-graph-gallery.com/graph/parallel_basic.html
 
 let colors = {
-    "Cloud9": "#87ceeb",
-    "100 Thieves": "#8b0000",
-    "Clutch Gaming": "#ff6961",
-    "Counter Logic Gaming": "#0277bd",
-    "Echo Fox": "#ffa500",
-    "FlyQuest": "#013920",
-    "Golden Guardians": "#fcc201",
-    "OpTic Gaming": "#95f985",
-    "Team Liquid": "#003366",
-    "Team SoloMid": "#999999"
-}
+    "LCS": {
+        "100 Thieves": "#8b0000",
+        "Cloud9": "#87ceeb",
+        "Clutch Gaming": "#ff6961",
+        "Counter Logic Gaming": "#0277bd",
+        "Echo Fox": "#ffa500",
+        "FlyQuest": "#018920",
+        "Golden Guardians": "#fcc201",
+        "OpTic Gaming": "#95f985",
+        "Team Liquid": "#003366",
+        "Team SoloMid": "#999999"
+    },
+    "LEC": {
+        "Excel Esports": "#8b0000",
+        "FC Schalke 04 Esports": "#87ceeb",
+        "Fnatic": "#ff6961",
+        "G2 Esports": "#0277bd",
+        "Misfits Gaming": "#ffa500",
+        "Origen": "#018920",
+        "Rogue (European Team)": "#fcc201",
+        "SK Gaming": "#95f985",
+        "Splyce": "#003366",
+        "Team Vitality": "#999999"
+    },
+    "LCK": {
+        "Afreeca Freecs": "#8b0000",
+        "DAMWON Gaming": "#87ceeb",
+        "Gen.G": "#ff6961",
+        "Griffin": "#0277bd",
+        "Hanwha Life Esports": "#ffa500",
+        "Jin Air Green Wings": "#018920",
+        "Kingzone DragonX": "#fcc201",
+        "KT Rolster": "#95f985",
+        "SANDBOX Gaming": "#003366",
+        "SK Telecom T1": "#999999"
+    },
+    "LPL": {
+        "Bilibili Gaming": "#8b0000",
+        "Dominus Esports": "#87ceeb",
+        "EDward Gaming": "#ff6961",
+        "FunPlus Phoenix": "#0277bd",
+        "Invictus Gaming": "#ffa500",
+        "JD Gaming": "#018920",
+        "LGD Gaming": "#fcc201",
+        "LNG Esports": "#95f985",
+        "Oh My God": "#003366",
+        "Rogue Warriors": "#999999",
+        "Royal Never Give Up": "#ffa500",
+        "Suning": "#018920",
+        "Team WE": "#fcc201",
+        "Top Esports": "#95f985",
+        "Vici Gaming": "#003366",
+        "Victory Five": "#999999"
+    }
+};
 
 class ParallelCoords extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {teams: ['Cloud9']};
         // Bind component as context to any new internal functions
         // (Doesn't need to be done for existing lifecycle functions)
         this.createLineChart = this.createLineChart.bind(this);
@@ -45,17 +88,6 @@ class ParallelCoords extends React.Component {
         let mtop = 30, mright = 10, mbot = 10, mleft = 0
         let width = this.props.size[0] - mleft - mright;
         let height = this.props.size[1] - mtop - mbot
-
-        // Filter for only the players that we want
-        let selection = this.props.data.filter(
-            d => {for(let t of this.state.teams) {
-                    if (d.TEAM == t) {
-                        return true 
-                    }
-                }
-                return false
-            }
-        )
 
         // Remove all elements from previous graphs
         // TODO: make this a transition instead
@@ -108,7 +140,7 @@ class ParallelCoords extends React.Component {
                 .enter().append("path")
                 .attr("d", path)
                 .style("fill", "none")
-                .style("stroke", d => colors[d.TEAM])
+                .style("stroke", d => colors[this.props.league][d.TEAM])
                 .style("stroke-width", 2)
                 .style('opacity", 1.0');
         }
